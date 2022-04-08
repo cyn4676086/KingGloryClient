@@ -1,0 +1,24 @@
+{
+
+	"PanelList": [
+		{
+			"PanelName": "IndexPanel",
+			"PanelPath": "Panel/IndexPanel"
+		},
+		{
+			"PanelName": "LodingPanel",
+			"PanelPath": "Panel/LodingPanel"
+		},
+		
+		{
+			"PanelName": "MainPanel",
+			"PanelPath": "Panel/MainPanel"
+		},
+		{
+			"PanelName": "PopUp",
+			"PanelPath": "Panel/PopUp"
+		}
+		
+
+	]
+}
