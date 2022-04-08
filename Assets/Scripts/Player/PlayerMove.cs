@@ -80,6 +80,7 @@ public class PlayerMove : MonoBehaviour
     {
         Model.transform.position = BattleFieldManager.Instance.HeroPos[Model.id - 1].position;
         Model.isDead = false;
+        Model.GetComponent<PlayerMove>().enabled = true;
         GetComponent<Animator>().SetTrigger("idel");
         Debug.LogError(Model.id + " " + BattleFieldManager.Instance.MyPlayerIndex);
         if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)

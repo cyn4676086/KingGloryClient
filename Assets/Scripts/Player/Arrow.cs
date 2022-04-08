@@ -29,10 +29,9 @@ public class Arrow : MonoBehaviour {
                 print("检测到碰撞，销毁箭");
                 Destroy(this.gameObject);
                 //发送协议
-                if (Owner == BattleFieldManager.Instance.MyPlayerIndex)
+                if (target.isDead!=true&& Owner == BattleFieldManager.Instance.MyPlayerIndex)
                 {
                     target.SendHurtRequest(-200, Owner);
-                    
                 }
             }
 
