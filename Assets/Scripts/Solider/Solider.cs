@@ -82,6 +82,8 @@ public class Solider : BodyModel {
     internal void SoliderDeathAnimator()
     {
         isDead = true;
+        //小兵立即停止移动 
+        GetComponent<NavMeshAgent>().speed = 0;
         GetComponent<Animator>().SetTrigger("death");
         Debug.LogError("小兵死亡动作");
         //动作播放完毕Event销毁
@@ -89,7 +91,7 @@ public class Solider : BodyModel {
     }
     public void OnSoliderDeath()
     {
-        print(gameObject);
+        
         Destroy(gameObject);
         Debug.LogError("销毁小兵");
     }

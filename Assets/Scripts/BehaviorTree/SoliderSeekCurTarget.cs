@@ -7,7 +7,8 @@ using UnityEngine.AI;
 public class SoliderSeekCurTarget : Action
 {
     //添加小兵攻击请求CD 时间戳计数
-    public float SoliderAttCD;
+    private float SoliderAttTime;
+    public float SoliderAttCD=2f;
     public int SoliderAtt=-10;
     public override TaskStatus OnUpdate()
     {
@@ -20,14 +21,13 @@ public class SoliderSeekCurTarget : Action
             
             if (dis < 3)
             {
-                if (Time.time > SoliderAttCD)
+                if (Time.time > SoliderAttTime)
                 {
-                    SoliderAttCD = Time.time + 2;
-                    GetComponent<NavMeshAgent>().isStopped = true;
+                    SoliderAttTime = Time.time + SoliderAttCD;
+                    
                     //小兵攻击目标
                     GetSolider().GetComponent<Animator>().SetTrigger("attack");
                 }
-                
             }
             else
             {

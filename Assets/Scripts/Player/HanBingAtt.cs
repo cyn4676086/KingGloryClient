@@ -13,6 +13,8 @@ public class HanBingAtt : MonoBehaviour
         SetSkill1Position();
     }
     #region 寒冰射手-普通攻击
+    private float HBAttTime;
+    public float HBAttCD=0.7f;
     [HideInInspector]
     public int attIndex;
     public GameObject Arrow;
@@ -48,11 +50,15 @@ public class HanBingAtt : MonoBehaviour
                 var dis = Vector3.Distance(item.transform.position, this.transform.position);
                 if (dis < 7f)
                 {
-                    attIndex = item.id;
-                    //发送攻击请求
-                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
-                    GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
-                    return true;
+                    if (Time.time > HBAttTime)
+                    {
+                        HBAttTime = Time.time + HBAttCD;
+                        attIndex = item.id;
+                        //发送攻击请求
+                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
+                        GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                        return true;
+                    }
                 }
             }
         }
