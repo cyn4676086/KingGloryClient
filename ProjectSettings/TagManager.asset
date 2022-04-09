@@ -8,6 +8,8 @@ TagManager:
   - trail
   - MatchingPanel
   - Solider
+  - HealthBarMe
+  - HealthBarTarget
   layers:
   - Default
   - TransparentFX

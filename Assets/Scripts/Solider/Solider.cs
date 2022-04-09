@@ -13,6 +13,7 @@ public class Solider : BodyModel {
     void Start () {
         BattleFieldManager.Instance.SoliderList.Add(this);
         HP = 200;
+        SetHealth();
 	}
 	public void Init(List<GameObject> target,int Group,int id)
     {

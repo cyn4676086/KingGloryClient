@@ -16,7 +16,7 @@ public class FireBallMove : MonoBehaviour
 
     void Update()
     {
-        if (target != null)
+        if (target.GetComponent<BodyModel>().isDead != true && target != null)
         {
             //移动
             //transform.LookAt(target.transform.position);

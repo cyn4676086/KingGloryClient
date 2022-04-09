@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerManager : BodyModel,IHurtObject
+public class TowerManager : BodyModel, IHurtObject
 {
-    private List<GameObject>targets=new List<GameObject>();
+    private List<GameObject> targets = new List<GameObject>();
     public GameObject fireFB;
     private GameObject fire;
 
@@ -16,17 +14,17 @@ public class TowerManager : BodyModel,IHurtObject
     public GameObject Tower3DModel;
     public int attVal;
 
+    
     void Start()
     {
         //注册自己 添加到list
         BattleFieldManager.Instance.TowerList.Add(this);
-
         Line = transform.Find("Line").gameObject.GetComponent<LineRenderer>();
         guanghuan = transform.Find("guangquan_jianta").gameObject;
         guanghuan.SetActive(false);
         TowerDeath = transform.Find("TowerDeathA").gameObject;
     }
-
+    
     void Update()
     {
         if (GetTarget() != null)
@@ -61,7 +59,7 @@ public class TowerManager : BodyModel,IHurtObject
         }
 
         //显示攻击范围,只有player1才显示
-        if (GetTarget() == BattleFieldManager.Instance.Player.gameObject&&other.GetComponent<PlayerModel>() != null)
+        if (GetTarget() == BattleFieldManager.Instance.Player.gameObject && other.GetComponent<PlayerModel>() != null)
         {
             guanghuan.SetActive(true);
         }
@@ -69,8 +67,8 @@ public class TowerManager : BodyModel,IHurtObject
 
     private void OnTriggerExit(Collider other)
     {
-        
-        if (targets.IndexOf(other.gameObject)>=-1)
+
+        if (targets.IndexOf(other.gameObject) >= -1)
         {
             targets.Remove(other.gameObject);
         }
@@ -82,7 +80,7 @@ public class TowerManager : BodyModel,IHurtObject
 
     private void Attack()
     {
-        if (isDead|| GetTarget() == null) { return; }
+        if (isDead || GetTarget() == null) { return; }
         //创建火球
         fire = Instantiate(fireFB, transform.position + new Vector3(0, 5.6f, 0), Quaternion.identity);
         fire.GetComponent<FireBallMove>().target = this.GetTarget();
@@ -118,7 +116,7 @@ public class TowerManager : BodyModel,IHurtObject
 
     public override void SendHurtRequest(int hurtValue, int ObjectID)
     {
-        BattleFieldRequest.Instance.HurtRequest(id, hurtValue,ObjectID);
+        BattleFieldRequest.Instance.HurtRequest(id, hurtValue, ObjectID);
     }
 
     internal void PlayDestroy()

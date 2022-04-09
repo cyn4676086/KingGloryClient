@@ -335,10 +335,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4474160901121272}
   - component: {fileID: 95216792743619726}
+  - component: {fileID: 114402098970268836}
   - component: {fileID: 54251913651704780}
   - component: {fileID: 136375044535750526}
+  - component: {fileID: 114709616296935340}
   - component: {fileID: 114316152144919610}
-  - component: {fileID: 114402098970268836}
   - component: {fileID: 195398904296821224}
   m_Layer: 0
   m_Name: Siloder_Red
@@ -1498,11 +1499,49 @@ MonoBehaviour:
   Group: 1
   id: 0
   HP: 0
+  HealthBarMe: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
+  HealthBarTarget: {fileID: 22400004, guid: c079096fb4ad48d499c71ef3d43c6c52, type: 2}
   FinalTargets:
   - {fileID: 0}
   - {fileID: 0}
   CurTargets: []
   SoliderAtt: -10
+--- !u!114 &114709616296935340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1422270442378782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b67d8750d564547b048e7c973b12c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLink:
+    targetScript: {fileID: 114402098970268836}
+    fieldName: HP
+  HealthbarPrefab: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
+  yOffset: 1
+  keepSize: 1
+  scale: 1
+  sizeOffsets: {x: 0, y: -300}
+  DrawOFFDistance: 1
+  drawDistance: 20
+  showHealthInfo: 0
+  healthInfoAlignment: 1
+  healthInfoSize: 10
+  alphaSettings:
+    defaultAlpha: 0.7
+    defaultFadeSpeed: 0.1
+    fullAplpha: 1
+    fullFadeSpeed: 0.1
+    nullAlpha: 0
+    nullFadeSpeed: 0.1
+    onHit:
+      fadeSpeed: 0.1
+      onHitAlpha: 1
+      duration: 1
+  canvas: {fileID: 0}
 --- !u!136 &136375044535750526
 CapsuleCollider:
   m_ObjectHideFlags: 1

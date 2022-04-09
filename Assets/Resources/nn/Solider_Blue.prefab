@@ -832,9 +832,10 @@ GameObject:
   - component: {fileID: 95573642598272358}
   - component: {fileID: 54380265494423520}
   - component: {fileID: 136772347095462402}
-  - component: {fileID: 114908542605316662}
   - component: {fileID: 114073800051411266}
+  - component: {fileID: 114908542605316662}
   - component: {fileID: 195151333071492718}
+  - component: {fileID: 114658469315767702}
   m_Layer: 0
   m_Name: Solider_Blue
   m_TagString: Solider
@@ -2036,11 +2037,49 @@ MonoBehaviour:
   Group: 2
   id: 0
   HP: 0
+  HealthBarMe: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
+  HealthBarTarget: {fileID: 22400004, guid: c079096fb4ad48d499c71ef3d43c6c52, type: 2}
   FinalTargets:
   - {fileID: 0}
   - {fileID: 0}
   CurTargets: []
   SoliderAtt: -10
+--- !u!114 &114658469315767702
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1758548280998318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b67d8750d564547b048e7c973b12c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLink:
+    targetScript: {fileID: 114073800051411266}
+    fieldName: HP
+  HealthbarPrefab: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
+  yOffset: 1
+  keepSize: 1
+  scale: 1
+  sizeOffsets: {x: 0, y: -300}
+  DrawOFFDistance: 1
+  drawDistance: 20
+  showHealthInfo: 0
+  healthInfoAlignment: 1
+  healthInfoSize: 10
+  alphaSettings:
+    defaultAlpha: 0.7
+    defaultFadeSpeed: 0.1
+    fullAplpha: 1
+    fullFadeSpeed: 0.1
+    nullAlpha: 0
+    nullFadeSpeed: 0.1
+    onHit:
+      fadeSpeed: 0.1
+      onHitAlpha: 1
+      duration: 1
+  canvas: {fileID: 0}
 --- !u!114 &114908542605316662
 MonoBehaviour:
   m_ObjectHideFlags: 1

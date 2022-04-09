@@ -38,21 +38,25 @@ public class BattleFieldManager : MonoBehaviour
 
     }
    
+    /// <summary>
+    /// 人物生成逻辑
+    /// </summary>
+    /// <param name="playerIndex"></param>
     internal void InitBattleField(int playerIndex)
     {
         //初始化场景
         MyPlayerIndex = playerIndex;
         //开始实例化
         Player = (Instantiate(Hero, HeroPos[MyPlayerIndex - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
-        
         Player.Model.id = MyPlayerIndex;
         Player.Model.isMe = true;
         Player.Model.Group = MyPlayerIndex;
         Player.Model.isDead = false;
         playerList.Add(Player.Model);
-
+        Player.GetComponent<BodyModel>().SetHealth();
         Camera.main.GetComponent<CameraFollow>().Init(Player.gameObject);
         OnInitCallBack();
+
     }
 
     internal void AddPlayer(string allPlayer)
@@ -74,6 +78,7 @@ public class BattleFieldManager : MonoBehaviour
                     p.Model.Group = i;
                     p.Model.isDead = false;
                     playerList.Add(p.Model);
+                    p.GetComponent<BodyModel>().SetHealth();
                 }
             }
             catch (Exception)
@@ -96,6 +101,7 @@ public class BattleFieldManager : MonoBehaviour
                 p.Model.id = index;
                 p.Model.Group = index;
                 playerList.Add(p.Model);
+                p.GetComponent<BodyModel>().SetHealth();
             }
         }
         catch (Exception)

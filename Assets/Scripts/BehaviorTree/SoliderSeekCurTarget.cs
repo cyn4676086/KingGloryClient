@@ -13,7 +13,7 @@ public class SoliderSeekCurTarget : Action
     public override TaskStatus OnUpdate()
     {
         var target = GetSolider().GetCurTarget();
-        if (target != null)
+        if ( target != null && target.GetComponent<BodyModel>().isDead != true)
         {
             var dis = Vector3.Distance(transform.position, target.transform.position);
             //动画
@@ -24,7 +24,6 @@ public class SoliderSeekCurTarget : Action
                 if (Time.time > SoliderAttTime)
                 {
                     SoliderAttTime = Time.time + SoliderAttCD;
-                    
                     //小兵攻击目标
                     GetSolider().GetComponent<Animator>().SetTrigger("attack");
                 }
