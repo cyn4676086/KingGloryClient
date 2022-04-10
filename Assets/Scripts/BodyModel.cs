@@ -13,7 +13,6 @@ public class BodyModel : MonoBehaviour,IHurtObject{
    
     public void SetHealth()
     {
-        Debug.LogError(BattleFieldManager.Instance.MyPlayerIndex + "   " + Group);
         if (BattleFieldManager.Instance.MyPlayerIndex == this.Group)
         {
             this.GetComponent<HealthBar>().HealthbarPrefab = HealthBarMe;

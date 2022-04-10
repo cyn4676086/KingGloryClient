@@ -335,7 +335,7 @@ ed4224fa60be5609993c972b11b3c250 Assembly-CSharp-firstpass.dll:.HealthbarRoot
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Arrow
 d653f62696ac919674f74bef9fa06752 Assembly-CSharp-firstpass.dll:HedgehogTeam.EasyTouch.QuickDrag
 b1154113c40e9398a6e72d9d1274549d Assembly-CSharp.dll:.RFX4_CopyPosition
-d3c51f779805c3a2805d5d15716ce403 Assembly-CSharp.dll:.HanBingAtt
+671ccb793e34934a9a504cda4011fdc6 Assembly-CSharp.dll:.HanBingAtt
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.PostEffectsBase
 a52504e50c587e2f89099cdd93ae7824 Assembly-CSharp.dll:.RFX4_LightCurves
 9c354d8cc0d2b625c87d5b3da48f6608 Assembly-CSharp.dll:.CFX_SpawnSystem

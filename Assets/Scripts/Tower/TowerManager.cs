@@ -80,7 +80,7 @@ public class TowerManager : BodyModel, IHurtObject
 
     private void Attack()
     {
-        if (isDead || GetTarget() == null) { return; }
+        if (isDead || GetTarget() == null||GetTarget().GetComponent<BodyModel>().isDead==true) { return; }
         //创建火球
         fire = Instantiate(fireFB, transform.position + new Vector3(0, 5.6f, 0), Quaternion.identity);
         fire.GetComponent<FireBallMove>().target = this.GetTarget();
@@ -110,7 +110,7 @@ public class TowerManager : BodyModel, IHurtObject
         {
             return;
         }
-        print("喷到了，要做一些什么呢");
+       
         BattleFieldRequest.Instance.HurtRequest(obj.GetComponent<BodyModel>().id, attVal, id);
     }
 

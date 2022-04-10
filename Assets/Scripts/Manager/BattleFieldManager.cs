@@ -176,15 +176,20 @@ public class BattleFieldManager : MonoBehaviour
        // print("PlayAtt:" + player + "type:" + type);
         var item = GetPlayerByID(player);
 
-        if (type == (int)Common.AttackType.Normal)
+        if (type == (int)Common.AttackType.HanBingNormal)
         {
-            //播放普通攻击动画
+            //寒冰 普通攻击动画
             item.GetComponent<HanBingAtt>().PlayAtt(target);
         }
-        else if (type == (int)Common.AttackType.Skill1)
+        else if (type == (int)Common.AttackType.HanBingSkill1)
         {
-            //播放技能攻击动画
+            //寒冰 技能1攻击动画
             item.GetComponent<HanBingAtt>().PlaySkill(target);
+        }
+        else if (type == (int)Common.AttackType.HanBingSkill2)
+        {
+            //寒冰 技能2攻击动画
+            item.GetComponent<HanBingAtt>().PlaySkill2();
         }
     }
     internal void TowerDestory(int index,int exp,int objectID)
@@ -217,7 +222,7 @@ public class BattleFieldManager : MonoBehaviour
 
             if (item.HP <= 0)
             {
-                print("塔爆炸");
+                //print("塔爆炸");
                 BattleFieldRequest.Instance.DestoryRequest(item.id,100,ObjectID);
                 if (item.id % 2 == 0)
                 {
@@ -238,7 +243,6 @@ public class BattleFieldManager : MonoBehaviour
             if (item.Model.HP <= 0)
             {
                 //角色死亡，进入复活倒计时
-                
                 item.PlayerDead();
             }
             
@@ -248,13 +252,13 @@ public class BattleFieldManager : MonoBehaviour
             //小兵被扣血
             var item = GetSoliderByID(index);
             item.HP += hp;
-            print(index + " 被攻击，剩余血量 " + item.HP);
+            //print(index + " 被攻击，剩余血量 " + item.HP);
             //播放特效fx
             Instantiate(attFx, item.transform.position + Vector3.up, Quaternion.identity);
 
             if (item!=null&&item.HP <= 0)
             {
-                print("小兵dead");
+                //print("小兵dead");
                 item.SoliderDeathAnimator();
             }
             ShowBlood(item.gameObject, hp);
@@ -290,6 +294,9 @@ public class BattleFieldManager : MonoBehaviour
     public void OnSkill1()
     {
         Player.GetComponent<HanBingAtt>().OnSkill1();
-
+    }
+    public void OnSkill2()
+    {
+        Player.GetComponent<HanBingAtt>().OnSkill2();
     }
 }

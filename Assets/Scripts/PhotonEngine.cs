@@ -48,8 +48,7 @@ public class PhotonEngine : MonoBehaviour, IPhotonPeerListener
 
     public void OnEvent(EventData eventData)
     {
-        DicTool.GetValue(RequestDic, (OperationCode)eventData.Code).
-    OnEvent(eventData);
+        DicTool.GetValue(RequestDic, (OperationCode)eventData.Code).OnEvent(eventData);
 
         return;
         if ((byte)OperationCode.Chat == eventData.Code)

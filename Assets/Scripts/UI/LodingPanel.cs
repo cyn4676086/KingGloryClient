@@ -14,6 +14,7 @@ public class LodingPanel : BasePanel {
 
     private IEnumerator Loding()
     {
+        SceneManager.LoadScene("GameHall");
         var t = Time.time;
         var img = transform.Find("bottom/Image").GetComponent<Image>();
         img.fillAmount = 0;

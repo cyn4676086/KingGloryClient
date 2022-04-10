@@ -14,7 +14,7 @@ public class HanBingAtt : MonoBehaviour
     }
     #region 寒冰射手-普通攻击
     private float HBAttTime;
-    public float HBAttCD=0.7f;
+    public float HBAttCD;
     [HideInInspector]
     public int attIndex;
     public GameObject Arrow;
@@ -45,7 +45,7 @@ public class HanBingAtt : MonoBehaviour
         //获取到攻击对象英雄，如果有，发送攻击指令
         foreach (var item in list)
         {
-            if (item.isDead==false&&item.Group!=Model.Group)
+            if (item.isDead==false&&item.Group!=Model.Group&&Model.isDead==false)
             {
                 var dis = Vector3.Distance(item.transform.position, this.transform.position);
                 if (dis < 7f)
@@ -55,7 +55,7 @@ public class HanBingAtt : MonoBehaviour
                         HBAttTime = Time.time + HBAttCD;
                         attIndex = item.id;
                         //发送攻击请求
-                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
+                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingNormal);
                         GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
                         return true;
                     }
@@ -117,8 +117,6 @@ public class HanBingAtt : MonoBehaviour
     public Transform Skill1Position;
     public GameObject Skill1Effect;
 
-  
-
     private void AddSkill1FxListener()
     {
         //添加技能侦听
@@ -131,7 +129,6 @@ public class HanBingAtt : MonoBehaviour
         //先判断是否命中Player
         if (e.Hit.transform.tag == "Player"||e.Hit.transform.tag=="Solider")
         {
-
             //发送请求，一技能伤害
             if (e.Hit.transform.GetComponent<BodyModel>().id != BattleFieldManager.Instance.MyPlayerIndex)
             {
@@ -161,7 +158,7 @@ public class HanBingAtt : MonoBehaviour
                 {
                     attIndex = item.GetComponent<PlayerModel>().id;
                     //发送攻击请求
-                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill1);
+                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingSkill1);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
                 }
             }
@@ -169,10 +166,10 @@ public class HanBingAtt : MonoBehaviour
     }
     public void OnSkill1Animation()
     {
-        print("技能特效1");
+       
         if (Skill1Effect == null) return;
         Skill1Effect.SetActive(true);
-        print("技能特效2");
+       
         isAttcking = false;
     }
     internal void PlaySkill(int target)
@@ -186,6 +183,49 @@ public class HanBingAtt : MonoBehaviour
         isAttcking = true;
         attIndex = target;
         Skill1Effect.GetComponent<Transform>().LookAt(item.transform.position + Vector3.up);
+    }
+    #endregion
+    #region 寒冰二技能
+    public float Skill2DuringTime;
+    internal void OnSkill2()
+    {
+        //获取到攻击对象，如果有，发送攻击指令
+        foreach (var item in BattleFieldManager.Instance.playerList)
+        {
+            if (item != this)
+            {
+                var dis = Vector3.Distance(item.transform.position, this.transform.position);
+                if (dis < 7f)
+                {
+                    attIndex = item.GetComponent<PlayerModel>().id;
+                    //发送攻击请求
+                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingSkill2);
+                    GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                }
+            }
+        }
+    }
+
+    private Coroutine Skill2EffectTime;
+    private IEnumerator SKill2During(float f,float Skill2DuringTime)
+    {
+        yield return new WaitForSeconds(Skill2DuringTime);
+        HBAttCD = f;
+        print("寒冰技能2结束" + f);
+    }
+    internal void PlaySkill2()
+    {
+        float f = HBAttCD;
+        print("Hanbing 2技能触发 增加攻击速度");
+        HBAttCD = HBAttCD /2;
+        transform.Find("Skill2Effect").gameObject.SetActive(true);
+        StartCoroutine(SKill2During(f, Skill2DuringTime));
+        
+    }
+    private void OnDisable()
+    {
+        //关闭协程
+        StopCoroutine(Skill2EffectTime);
     }
     #endregion
 }

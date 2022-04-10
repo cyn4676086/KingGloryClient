@@ -94,7 +94,6 @@ public class Solider : BodyModel {
     {
         
         Destroy(gameObject);
-        Debug.LogError("销毁小兵");
     }
     public void OnSoliderAtt()
     {
@@ -103,7 +102,6 @@ public class Solider : BodyModel {
         {
             BattleFieldRequest.Instance.HurtRequest (GetCurTarget().GetComponent<BodyModel>().id, SoliderAtt,id);
         }
-        Debug.LogError("发送小兵伤害请求");
     }
     public override void SendHurtRequest(int hurtValue, int ObjectID)
     {

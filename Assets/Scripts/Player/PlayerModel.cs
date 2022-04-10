@@ -13,7 +13,7 @@ public class PlayerModel : BodyModel
     }
     public override void SendHurtRequest(int hurtValue, int ObjectID)
     {
-        print("发送普通攻击player扣血请求");
+        //print("发送普通攻击player扣血请求");
         BattleFieldRequest.Instance.HurtRequest(id, hurtValue, ObjectID);
     }
 }
