@@ -19,8 +19,10 @@ public class SoliderSeekCurTarget : Action
             //动画
             GetSolider().GetComponent<Animator>().SetFloat("speed",target.transform.position.magnitude);
             
-            if (dis < 3)
+            if (dis < 2)
             {
+
+                GetComponent<NavMeshAgent>().isStopped = true;
                 if (Time.time > SoliderAttTime)
                 {
                     SoliderAttTime = Time.time + SoliderAttCD;

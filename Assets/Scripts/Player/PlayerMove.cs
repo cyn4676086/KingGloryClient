@@ -9,7 +9,9 @@ public class PlayerMove : MonoBehaviour
 
     #region 生命周期
     
-   
+    public bool isAttacking = false;
+    public float Speed=1;
+
     void Update()
     {
         SendMyAxis();
@@ -26,15 +28,15 @@ public class PlayerMove : MonoBehaviour
     public void Move(int x, int y)
     {
         var speed = new Vector3(x, 0, y);
-        if (GetComponent<HanBingAtt>().isAttcking == true)
+        if (isAttacking == true)
         {
             return;
         }
         //控制 nav agent移动
-        GetComponent<NavMeshAgent>().velocity = new Vector3(x, 0, y) * 3f;
+        GetComponent<NavMeshAgent>().velocity = new Vector3(x, 0, y) * 3f*Speed;
         //切换动画状态机
-        GetComponent<Animator>().SetFloat("speed", speed.magnitude);
-
+        GetComponent<Animator>().SetFloat ("speed", speed.magnitude);
+        
         //速度小于0的时候，就不旋转。
         if (speed.magnitude == 0)
         {
@@ -76,19 +78,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
-    private void PlayerRebirth()
-    {
-        Model.transform.position = BattleFieldManager.Instance.HeroPos[Model.id - 1].position;
-        Model.isDead = false;
-        Model.GetComponent<PlayerMove>().enabled = true;
-        GetComponent<Animator>().SetTrigger("idel");
-        Debug.LogError(Model.id + " " + BattleFieldManager.Instance.MyPlayerIndex);
-        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
-        {
-            Debug.LogError("复活加血");
-            BattleFieldRequest.Instance.HurtRequest(Model.id, 1000, Model.id);
-        }
-    }
+   
 
     //协程复活计时
     private Coroutine Coroutine;
@@ -97,13 +87,28 @@ public class PlayerMove : MonoBehaviour
         Model.isDead = true;
         GetComponent<Animator>().SetTrigger("death");
         //死亡动画 禁止玩家操作模型
-        Model.GetComponent<PlayerMove>().enabled = false;
+        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            DontPanel.Instance.gameObject.SetActive(true);
+        }
         Coroutine = StartCoroutine(WaitRebirth());
     }
     private IEnumerator WaitRebirth()
     {
         yield return new WaitForSeconds(10f);
-        PlayerRebirth();
+        Model.transform.position = BattleFieldManager.Instance.HeroPos[Model.id - 1].position;
+        Model.isDead = false;
+        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            DontPanel.Instance.gameObject.SetActive(false);
+        }
+        GetComponent<Animator>().SetTrigger("idel");
+        Debug.LogError(Model.id + " " + BattleFieldManager.Instance.MyPlayerIndex);
+        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            Debug.LogError("复活加血");
+            BattleFieldRequest.Instance.HurtRequest(Model.id, 1000, Model.id);
+        }
     }
     private void OnDisable()
     {

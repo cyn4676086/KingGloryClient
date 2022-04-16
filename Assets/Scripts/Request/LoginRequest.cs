@@ -14,10 +14,8 @@ public class LoginRequest : Request{
     {
         //构造参数
         var data = new Dictionary<byte, object>();
-
         data.Add((byte)ParaCode.UserName,UserName);
         data.Add((byte)ParaCode.Password,Password);
-
         //发送
         PhotonEngine.peer.OpCustom((byte)OpCode, data, true);
        

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HanBingAtt : MonoBehaviour
 {
+    
     void Start()
     {
         AddSkill1FxListener();
@@ -11,7 +12,9 @@ public class HanBingAtt : MonoBehaviour
     void LateUpdate()
     {
         SetSkill1Position();
+        SetSkill3Position();
     }
+
     #region 寒冰射手-普通攻击
     private float HBAttTime;
     public float HBAttCD;
@@ -19,8 +22,7 @@ public class HanBingAtt : MonoBehaviour
     public int attIndex;
     public GameObject Arrow;
     public GameObject HandPosition;
-    [HideInInspector]
-    public bool isAttcking = false;
+    
     public PlayerModel Model { get { return GetComponent<PlayerModel>(); } }
    
     public void OnAttBtn()
@@ -39,7 +41,6 @@ public class HanBingAtt : MonoBehaviour
         }
 
     }
-
     private bool GetTarget(List<BodyModel> list)
     {
         //获取到攻击对象英雄，如果有，发送攻击指令
@@ -55,7 +56,7 @@ public class HanBingAtt : MonoBehaviour
                         HBAttTime = Time.time + HBAttCD;
                         attIndex = item.id;
                         //发送攻击请求
-                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingNormal);
+                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
                         GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
                         return true;
                     }
@@ -64,7 +65,6 @@ public class HanBingAtt : MonoBehaviour
         }
         return false;
     }
-
     public void OnAttackAnimation()
     {
         //弓箭实例化
@@ -84,7 +84,7 @@ public class HanBingAtt : MonoBehaviour
         {
             arrow.target = BattleFieldManager.Instance.GetSoliderByID(attIndex);
         }
-        isAttcking = false;
+        GetComponent<PlayerMove>().isAttacking = false;
     }
     internal void PlayAtt(int target)
     {
@@ -109,33 +109,34 @@ public class HanBingAtt : MonoBehaviour
         }
         //切换动画状态机
         GetComponent<Animator>().SetTrigger("attack");
-        isAttcking = true;
+        GetComponent<PlayerMove>().isAttacking = true;
         attIndex = target;
     }
     #endregion
     #region 寒冰射手-一技能
     public Transform Skill1Position;
     public GameObject Skill1Effect;
-
+    public int Skill1Hurt;
+    //技能命中检测
     private void AddSkill1FxListener()
     {
         //添加技能侦听
         var tm = GetComponentInChildren<RFX4_TransformMotion>(true);
         //添加事件侦听
-        if (tm != null) tm.CollisionEnter += Tm_CollisionEnter;
+        if (tm != null) tm.CollisionEnter += Tm_CollisionEnter_1;
     }
-    private void Tm_CollisionEnter(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
+    private void Tm_CollisionEnter_1(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
     {
-        //先判断是否命中Player
-        if (e.Hit.transform.tag == "Player"||e.Hit.transform.tag=="Solider")
+        //技能命中
+        if (e.Hit.transform.tag == "Player" || e.Hit.transform.tag == "Solider")
         {
-            //发送请求，一技能伤害
+            //发送请求，技能伤害
             if (e.Hit.transform.GetComponent<BodyModel>().id != BattleFieldManager.Instance.MyPlayerIndex)
             {
-                BattleFieldRequest.Instance.HurtRequest(e.Hit.transform.GetComponent<PlayerModel>().id,-80, Model.id);
+                BattleFieldRequest.Instance.HurtRequest(e.Hit.transform.GetComponent<PlayerModel>().id, Skill1Hurt, Model.id);
             }
         }
-        
+
     }
     private void SetSkill1Position()
     {
@@ -151,14 +152,14 @@ public class HanBingAtt : MonoBehaviour
         //获取到攻击对象，如果有，发送攻击指令
         foreach (var item in BattleFieldManager.Instance.playerList)
         {
-            if (item != this)
+            if (item != Model)
             {
                 var dis = Vector3.Distance(item.transform.position, this.transform.position);
                 if (dis < 7f)
                 {
                     attIndex = item.GetComponent<PlayerModel>().id;
                     //发送攻击请求
-                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingSkill1);
+                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill1);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
                 }
             }
@@ -169,8 +170,8 @@ public class HanBingAtt : MonoBehaviour
        
         if (Skill1Effect == null) return;
         Skill1Effect.SetActive(true);
-       
-        isAttcking = false;
+
+        GetComponent<PlayerMove>().isAttacking = false;
     }
     internal void PlaySkill(int target)
     {
@@ -180,9 +181,13 @@ public class HanBingAtt : MonoBehaviour
         //切换动画状态机
         GetComponent<Animator>().SetTrigger("skill1");
         print("技能动作触发");
-        isAttcking = true;
+        GetComponent<PlayerMove>().isAttacking = true;
         attIndex = target;
-        Skill1Effect.GetComponent<Transform>().LookAt(item.transform.position + Vector3.up);
+        if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != this.Model.Group)
+        {
+            Skill1Effect.GetComponent<Transform>().LookAt(item.transform.position + Vector3.up);
+        }
+        
     }
     #endregion
     #region 寒冰二技能
@@ -192,14 +197,14 @@ public class HanBingAtt : MonoBehaviour
         //获取到攻击对象，如果有，发送攻击指令
         foreach (var item in BattleFieldManager.Instance.playerList)
         {
-            if (item != this)
+            if (item != Model)
             {
                 var dis = Vector3.Distance(item.transform.position, this.transform.position);
                 if (dis < 7f)
                 {
                     attIndex = item.GetComponent<PlayerModel>().id;
                     //发送攻击请求
-                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.HanBingSkill2);
+                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill2);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
                 }
             }
@@ -215,6 +220,7 @@ public class HanBingAtt : MonoBehaviour
     }
     internal void PlaySkill2()
     {
+        GetComponent<PlayerMove>().isAttacking = false;
         float f = HBAttCD;
         print("Hanbing 2技能触发 增加攻击速度");
         HBAttCD = HBAttCD /2;
@@ -226,6 +232,64 @@ public class HanBingAtt : MonoBehaviour
     {
         //关闭协程
         StopCoroutine(Skill2EffectTime);
+    }
+    #endregion
+    #region 寒冰射手-三技能
+    public Transform Skill3Position;
+    public GameObject Skill3Effect;
+    public int Skill3Hurt;
+    
+    private void SetSkill3Position()
+    {
+        //技能特效跟随英雄
+        if (Skill3Effect != null && Skill3Position != null)
+        {
+            Skill3Effect.transform.position = Skill3Position.position;
+        }
+    }
+
+    internal void OnSkill3()
+    {
+        //获取到攻击对象，如果有，发送攻击指令
+        foreach (var item in BattleFieldManager.Instance.playerList)
+        {
+            if (item != Model)
+            {
+                var dis = Vector3.Distance(item.transform.position, this.transform.position);
+                if (dis < 7f)
+                {
+                    attIndex = item.GetComponent<PlayerModel>().id;
+                    //发送攻击请求
+                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill3);
+                    GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                }
+            }
+        }
+    }
+    public void OnSkill3Animation()
+    {
+
+        if (Skill3Effect == null) return;
+        Skill3Effect.SetActive(true);
+    }
+    public void OnSkill3AnimationDone()
+    {
+        GetComponent<PlayerMove>().isAttacking = false;
+    }
+    internal void PlaySkill3(int target)
+    {
+        //先转向到目标角色
+        GetComponent<Transform>().LookAt(BattleFieldManager.Instance.GetPlayerByID(target).GetComponent<Transform>().position);
+        var item = BattleFieldManager.Instance.GetPlayerByID(target);
+        //切换动画状态机
+        GetComponent<Animator>().SetTrigger("skill3");
+        print("技能3动作触发");
+        GetComponent<PlayerMove>().isAttacking = true;
+        attIndex = target;
+        if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != this.Model.Group)
+        {
+            Skill3Effect.GetComponent<Transform>().LookAt(item.transform.position);
+        }
     }
     #endregion
 }

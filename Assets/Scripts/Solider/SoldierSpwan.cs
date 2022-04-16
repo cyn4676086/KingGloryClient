@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SoldierSpwan : MonoBehaviour
 {
@@ -22,7 +23,9 @@ public class SoldierSpwan : MonoBehaviour
 
     private void StartSpwan()
     {
+       
         Coroutine = StartCoroutine(SpwanSolider());
+
     }
 
     private void OnDisable()
@@ -38,13 +41,14 @@ public class SoldierSpwan : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                var s = Instantiate(SodierPF, this.transform.position, Quaternion.identity);
+                var s = Instantiate(SodierPF,transform.position, Quaternion.identity);
+                s.GetComponent<NavMeshAgent>().enabled = true;
                 //print(s + ":" + s.GetComponent<Soldier>());
                 s.GetComponent<Solider>().Init(FinalTargetList, Group, 6000 + index + Group * 100);
                 index++;
                 yield return new WaitForSeconds(1f);
             }
-            yield return new WaitForSeconds(40f);
+            yield return new WaitForSeconds(25f);
         }
     }
 

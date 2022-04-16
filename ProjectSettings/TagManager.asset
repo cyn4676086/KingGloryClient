@@ -10,6 +10,7 @@ TagManager:
   - Solider
   - HealthBarMe
   - HealthBarTarget
+  - UI_EasyTouch
   layers:
   - Default
   - TransparentFX

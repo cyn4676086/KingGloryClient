@@ -4,6 +4,7 @@ using System.Collections;
 public class RFX4_DeactivateByTime : MonoBehaviour {
 
     public float DeactivateTime = 3;
+    public bool destory;
 
     private bool canUpdateState;
 	// Use this for initialization
@@ -24,5 +25,9 @@ public class RFX4_DeactivateByTime : MonoBehaviour {
     void DeactivateThis()
     {
         gameObject.SetActive(false);
+        if (destory)
+        {
+            Destroy(this.transform.gameObject);
+        }
 	}
 }

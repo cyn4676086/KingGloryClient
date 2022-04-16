@@ -20,7 +20,7 @@ public class LodingPanel : BasePanel {
         img.fillAmount = 0;
         while (true)
         {
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.05f);
             img.fillAmount = (Time.time - t) / 4;
             if (img.fillAmount==1)
             {

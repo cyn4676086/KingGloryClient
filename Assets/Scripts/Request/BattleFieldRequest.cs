@@ -11,7 +11,6 @@ public class BattleFieldRequest : Request
     public static BattleFieldRequest Instance;
     private int curX;
     private int curY;
-    private float curRotation;
 
     public new void Awake()
     {
@@ -29,17 +28,17 @@ public class BattleFieldRequest : Request
 
     public override void OnOperationResponse(OperationResponse operationResponse)
     {
-        //解析数据
-        if (operationResponse.ReturnCode == (byte)ReturnCode.Success)
-        {
-            int playerIndex = (int)DicTool.GetValue<byte, object>(operationResponse.Parameters, (byte)ParaCode.BF_Join);
-            Debug.Log("playerIndex:" + playerIndex);
-            BattleFieldManager.Instance.InitBattleField(playerIndex);
-        }
-        else
-        {
-            Debug.Log("请求失败");
-        }
+        ////解析数据
+        //if (operationResponse.ReturnCode == (byte)ReturnCode.Success)
+        //{
+        //    int playerIndex = (int)DicTool.GetValue<byte, object>(operationResponse.Parameters, (byte)ParaCode.BF_Join);
+        //    Debug.Log("playerIndex:" + playerIndex);
+        //    BattleFieldManager.Instance.InitBattleField(playerIndex,"HanBing");
+        //}
+        //else
+        //{
+        //    Debug.Log("请求失败");
+        //}
     }
 
     internal void MoveRequest(int posX, int posY, Vector3 pos)
@@ -125,13 +124,14 @@ public class BattleFieldRequest : Request
 
         ParaCode type = (ParaCode)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.ParaType);
         // Debug.Log("收到服务器:" + type);
-        if (type == ParaCode.BF_Join)
-        {
-            string allPlayer = (string)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.BF_Join);
-            // Debug.Log("收到服务器:" + allPlayer);
-            BattleFieldManager.Instance.AddPlayer(allPlayer);
-        }
-        else if (type == ParaCode.BF_Move)
+        //if (type == ParaCode.BF_Join)
+        //{
+        //    string allPlayer = (string)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.BF_Join);
+        //    Debug.Log("收到服务器:" + allPlayer);
+        //    BattleFieldManager.Instance.AddPlayer(allPlayer);
+        //}
+        //else 
+        if (type == ParaCode.BF_Move)
         {
             string para = (string)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.BF_Move);
             

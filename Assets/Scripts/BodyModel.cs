@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BodyModel : MonoBehaviour,IHurtObject{
+    [HideInInspector]
 	public bool isDead;
-	public int Group;
-	public int id;
+    [HideInInspector]
+    public int Group;
+    [HideInInspector]
+    public int id;
 	public int HP;
     public RectTransform HealthBarMe;
     public RectTransform HealthBarTarget;

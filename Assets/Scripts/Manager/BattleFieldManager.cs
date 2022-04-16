@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleFieldManager : MonoBehaviour
 {
     public static BattleFieldManager Instance;
     public int MyPlayerIndex = -1;
 
-    public GameObject Hero;
+    [HideInInspector]
+    public GameObject MyHero;
+    public GameObject OtherHero;
     public List<Transform> HeroPos;
 
     [HideInInspector]
@@ -21,33 +24,29 @@ public class BattleFieldManager : MonoBehaviour
     public PlayerMove Player;
     public GameObject attFx;
     public Action OnInitCallBack;
-
+    #region 生命周期
     private void Awake()
     {
         Instance = this;
     }
-
     void Start()
     {
 
     }
-
-    // Update is called once per frame
     void Update()
     {
 
     }
-   
-    /// <summary>
-    /// 人物生成逻辑
-    /// </summary>
-    /// <param name="playerIndex"></param>
-    internal void InitBattleField(int playerIndex)
+    #endregion
+    #region 人物生成逻辑
+    internal void InitBattleField(int playerIndex,string HeroName)
     {
         //初始化场景
         MyPlayerIndex = playerIndex;
         //开始实例化
-        Player = (Instantiate(Hero, HeroPos[MyPlayerIndex - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
+        Player = (Instantiate(Resources.Load("Heros/"+HeroName)as GameObject, HeroPos[MyPlayerIndex - 1].position, HeroPos[MyPlayerIndex - 1].rotation)).GetComponent<PlayerMove>();
+        Player.Model.HeroName = HeroName;
+        Debug.LogError("初始化我方英雄");
         Player.Model.id = MyPlayerIndex;
         Player.Model.isMe = true;
         Player.Model.Group = MyPlayerIndex;
@@ -58,46 +57,45 @@ public class BattleFieldManager : MonoBehaviour
         OnInitCallBack();
 
     }
+    //internal void AddPlayer(string allPlayer)
+    //{
+    //    //解析
+    //    var arr = allPlayer.Split(',');
+    //    foreach (var item in arr)//遍历在场玩家的index
+    //    {
+    //        try//最后多了一个空格，所以转换成int会失败，不过这里忽略不计
+    //        {
+    //            //转换成int
+    //            int i = Convert.ToInt16(item);
 
-    internal void AddPlayer(string allPlayer)
-    {
-        //解析
-        var arr = allPlayer.Split(',');
-        foreach (var item in arr)//遍历在场玩家的index
-        {
-            try//最后多了一个空格，所以转换成int会失败，不过这里忽略不计
-            {
-                //转换成int
-                int i = Convert.ToInt16(item);
+    //            if (i != MyPlayerIndex)
+    //            {
 
-                if (i != MyPlayerIndex)
-                {
-                   
-                    PlayerMove p = (Instantiate(Hero, HeroPos[i - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
-                    p.Model.id = i;
-                    p.Model.Group = i;
-                    p.Model.isDead = false;
-                    playerList.Add(p.Model);
-                    p.GetComponent<BodyModel>().SetHealth();
-                }
-            }
-            catch (Exception)
-            {
+    //                PlayerMove p = (Instantiate(Hero, HeroPos[i - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
+    //                p.Model.id = i;
+    //                p.Model.Group = i;
+    //                p.Model.isDead = false;
+    //                playerList.Add(p.Model);
+    //                p.GetComponent<BodyModel>().SetHealth();
+    //            }
+    //        }
+    //        catch (Exception)
+    //        {
 
-            }
+    //        }
 
-        }
-    }
-
-    internal void AddOnePlayer(int index)
+    //    }
+    //}
+    internal void AddOnePlayer(int index,string HeroName)
     {
         //解析
         try//最后多了一个空格，所以转换成int会失败，不过这里忽略不计
         {
             if (index != MyPlayerIndex)
             {
-               
-                PlayerMove p = (Instantiate(Hero, HeroPos[index - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
+                PlayerMove p = (Instantiate(Resources.Load("Heros/" + HeroName) as GameObject, HeroPos[index - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
+                p.Model.HeroName = HeroName;
+                Debug.LogError("初始化敌方英雄");
                 p.Model.id = index;
                 p.Model.Group = index;
                 playerList.Add(p.Model);
@@ -110,6 +108,8 @@ public class BattleFieldManager : MonoBehaviour
         }
 
     }
+    #endregion
+    #region 全局功能相关
 
     /// <summary>
     /// 收到服务器发送的移动数据，进行解析显示
@@ -130,8 +130,6 @@ public class BattleFieldManager : MonoBehaviour
             }
         }
     }
-
-    
     internal PlayerMove GetPlayerByID(int attIndex)
     {
         //通过id找到对象
@@ -144,7 +142,7 @@ public class BattleFieldManager : MonoBehaviour
         }
         return null;
     }
-
+    
     internal TowerManager GetTowerByID(int attIndex)
     {
         //通过id找到对象
@@ -169,40 +167,17 @@ public class BattleFieldManager : MonoBehaviour
         }
         return null;
     }
-
-    internal void PlayAtt(int player, int target, int type)
-    {
-
-       // print("PlayAtt:" + player + "type:" + type);
-        var item = GetPlayerByID(player);
-
-        if (type == (int)Common.AttackType.HanBingNormal)
-        {
-            //寒冰 普通攻击动画
-            item.GetComponent<HanBingAtt>().PlayAtt(target);
-        }
-        else if (type == (int)Common.AttackType.HanBingSkill1)
-        {
-            //寒冰 技能1攻击动画
-            item.GetComponent<HanBingAtt>().PlaySkill(target);
-        }
-        else if (type == (int)Common.AttackType.HanBingSkill2)
-        {
-            //寒冰 技能2攻击动画
-            item.GetComponent<HanBingAtt>().PlaySkill2();
-        }
-    }
-    internal void TowerDestory(int index,int exp,int objectID)
+    internal void TowerDestory(int index, int exp, int objectID)
     {
         if (Mathf.Round(index / 1000) == 2)
         {
             //防御塔
-           // print("销毁" + index);
+            // print("销毁" + index);
             var item = GetTowerByID(index);
             item.PlayDestroy();
         }
         //print("ObjID" + objectID);
-        if(Mathf.Round(objectID / 1000) == 0)
+        if (Mathf.Round(objectID / 1000) == 0)
         {
             var item = GetPlayerByID(objectID);
             item.Model.ExpUp(exp);
@@ -216,7 +191,6 @@ public class BattleFieldManager : MonoBehaviour
             //塔被扣血
             var item = GetTowerByID(index);
             item.HP += hp;
-           // print(index + " 被攻击，剩余血量 " + item.HP);
             //播放特效fx
             Instantiate(attFx, item.transform.position + Vector3.up, Quaternion.identity);
 
@@ -264,7 +238,6 @@ public class BattleFieldManager : MonoBehaviour
             ShowBlood(item.gameObject, hp);
         }
     }
-   
     //扣血动画
     private void ShowBlood(GameObject item,int hp)
     {
@@ -285,18 +258,144 @@ public class BattleFieldManager : MonoBehaviour
         //Send the information
         bl_UHTUtils.GetHUDText.NewText(info);
     }
+    #endregion
+    #region 英雄攻击与技能
 
+    //英雄攻击与技能
+    internal void PlayAtt(int player, int target, int type)
+    {
+
+        var item = GetPlayerByID(player);
+
+        if (item.Model.HeroName == "HanBing")
+        {
+            if (type == (int)Common.AttackType.Normal)
+            {
+                //通用 普通攻击动画
+                item.GetComponent<HanBingAtt>().PlayAtt(target);
+            }
+            else if (type == (int)Common.AttackType.Skill1)
+            {
+                //通用 技能1攻击动画
+                item.GetComponent<HanBingAtt>().PlaySkill(target);
+            }
+            else if (type == (int)Common.AttackType.Skill2)
+            {
+                //通用 技能2攻击动画
+                item.GetComponent<HanBingAtt>().PlaySkill2();
+            }
+            else if (type == (int)Common.AttackType.Skill3)
+            {
+                //通用 技能3攻击动画
+                item.GetComponent<HanBingAtt>().PlaySkill3(target);
+            }
+        }
+        if (item.Model.HeroName == "LeiDian")
+        {
+            if (type == (int)Common.AttackType.Normal)
+            {
+                //通用 普通攻击动画
+                item.GetComponent<LeiDianAtt>().PlayAtt(target);
+            }
+            else if (type == (int)Common.AttackType.Skill1)
+            {
+                //通用 技能1攻击动画
+                item.GetComponent<LeiDianAtt>().PlaySkill(target);
+            }
+            else if (type == (int)Common.AttackType.Skill2)
+            {
+                //通用 技能2攻击动画
+                item.GetComponent<LeiDianAtt>().PlaySkill2();
+            }
+            else if (type == (int)Common.AttackType.Skill3)
+            {
+                //通用 技能3攻击动画
+                item.GetComponent<LeiDianAtt>().PlaySkill3(target);
+            }
+        }
+        if (item.Model.HeroName == "JianSheng")
+        {
+            if (type == (int)Common.AttackType.Normal)
+            {
+                //通用 普通攻击动画
+                item.GetComponent<JianShengAtt>().PlayAtt(target);
+            }
+            else if (type == (int)Common.AttackType.Skill1)
+            {
+                //通用 技能1攻击动画
+                item.GetComponent<JianShengAtt>().PlaySkill1();
+            }
+            else if (type == (int)Common.AttackType.Skill2)
+            {
+                //通用 技能2攻击动画
+                item.GetComponent<JianShengAtt>().PlaySkill2();
+            }
+            else if (type == (int)Common.AttackType.Skill3)
+            {
+                //通用 技能3攻击动画
+                item.GetComponent<JianShengAtt>().PlaySkill3(target);
+            }
+        }
+    }
     public void OnAttBtn()
     {
-        //调用P'layer'Move.OnAttBtn()
-        Player.GetComponent<HanBingAtt>().OnAttBtn();
+        if (Player.Model.HeroName == "HanBing")
+        {
+            Player.GetComponent<HanBingAtt>().OnAttBtn();
+        }
+        if (Player.Model.HeroName == "LeiDian")
+        {
+            Player.GetComponent<LeiDianAtt>().OnAttBtn();
+        }
+        if (Player.Model.HeroName == "JianSheng")
+        {
+            Player.GetComponent<JianShengAtt>().OnAttBtn();
+        }
     }
     public void OnSkill1()
     {
-        Player.GetComponent<HanBingAtt>().OnSkill1();
+        if (Player.Model.HeroName == "HanBing")
+        {
+            Player.GetComponent<HanBingAtt>().OnSkill1();
+        }
+        if (Player.Model.HeroName == "LeiDian")
+        {
+            Player.GetComponent<LeiDianAtt>().OnSkill1();
+        }
+        if (Player.Model.HeroName == "JianSheng")
+        {
+            Player.GetComponent<JianShengAtt>().OnSkill1();
+        }
     }
     public void OnSkill2()
     {
-        Player.GetComponent<HanBingAtt>().OnSkill2();
+        if (Player.Model.HeroName == "HanBing")
+        {
+            Player.GetComponent<HanBingAtt>().OnSkill2();
+        }
+        if (Player.Model.HeroName == "LeiDian")
+        {
+            Player.GetComponent<LeiDianAtt>().OnSkill2();
+        }
+        if (Player.Model.HeroName == "JianSheng")
+        {
+            Player.GetComponent<JianShengAtt>().OnSkill2();
+        }
     }
+    public void OnSkill3()
+    {
+        if (Player.Model.HeroName == "HanBing")
+        {
+            Player.GetComponent<HanBingAtt>().OnSkill3();
+        }
+        if (Player.Model.HeroName == "LeiDian")
+        {
+            Player.GetComponent<LeiDianAtt>().OnSkill3();
+        }
+        if (Player.Model.HeroName == "JianSheng")
+        {
+            Player.GetComponent<JianShengAtt>().OnSkill3();
+        }
+    }
+    #endregion
 }

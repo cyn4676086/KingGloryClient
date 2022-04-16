@@ -6,7 +6,7 @@ public class Arrow : MonoBehaviour {
 	internal int Owner;
 	internal BodyModel target;
 	private float speed = 10f;
-
+    public int ArrowHurt=-200;
 	// Use this for initialization
 	void Start () {
 		
@@ -31,7 +31,7 @@ public class Arrow : MonoBehaviour {
                 //发送协议
                 if (target.isDead!=true&& Owner == BattleFieldManager.Instance.MyPlayerIndex)
                 {
-                    target.SendHurtRequest(-200, Owner);
+                    target.SendHurtRequest(ArrowHurt, Owner);
                 }
             }
 

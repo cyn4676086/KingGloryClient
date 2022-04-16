@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -98,7 +98,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
+    agentHeight: 2.16
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbcf72e228c3154bbbdb1b9d46c55f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SigninPanel: {fileID: 847428301}
+  SigninPanel: {fileID: 0}
 --- !u!1 &320125305
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,8 +476,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 320125305}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 380, y: 214, z: 0}
-  m_LocalScale: {x: 0.7133333, y: 0.7133333, z: 0.7133333}
+  m_LocalPosition: {x: 338.5, y: 211.5, z: 0}
+  m_LocalScale: {x: 0.705, y: 0.705, z: 0.705}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -772,8 +772,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 503221892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 380, y: 214, z: 0}
-  m_LocalScale: {x: 0.7133333, y: 0.7133333, z: 0.7133333}
+  m_LocalPosition: {x: 338.5, y: 211.5, z: 0}
+  m_LocalScale: {x: 0.705, y: 0.705, z: 0.705}
   m_Children:
   - {fileID: 360391300}
   - {fileID: 381564320}
@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e949600ad534541ba69f70e460ba9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoginPanel: {fileID: 315647508}
+  LoginPanel: {fileID: 0}
 --- !u!114 &847428303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d82cd14faedc1c418a48dac9f051772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpCode: 1
+  OpCode: 0
   UserName: 
   Password: 
 --- !u!1 &885428775
