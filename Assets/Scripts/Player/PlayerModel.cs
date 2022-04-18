@@ -6,9 +6,11 @@ using UnityEngine.AI;
 
 public class PlayerModel : BodyModel
 {
+    public int Exp;
     [HideInInspector]
     public bool isMe = false;
-
+    [HideInInspector]
+    public string HeroName;
     void FixedUpdate()
     {
         if (isFly)
@@ -20,10 +22,9 @@ public class PlayerModel : BodyModel
             Dowing();
         }
     }
-    public string HeroName;
     internal void ExpUp(int exp)
     {
-        print("经验+1");
+        Exp += exp;
         transform.Find("LvFx").GetComponent<ParticleSystem>().Play();
     }
     public override void SendHurtRequest(int hurtValue, int ObjectID)
@@ -77,8 +78,9 @@ public class PlayerModel : BodyModel
         yield return new WaitForSeconds(time);
         GetComponent<PlayerMove>().Speed = 1;
     }
-    #endregion 
+    #endregion
     #region 人物被击飞
+    [HideInInspector]
     public bool isFly=false;
     private bool isDown;
     private Coroutine Fly;

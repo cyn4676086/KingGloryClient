@@ -8,14 +8,17 @@ public class Solider : BodyModel {
 
 	public List<GameObject>FinalTargets;
     public List< GameObject>CurTargets;
-    public int SoliderAtt=-10;
+    public int SoliderAtt;
 
     void Start () {
         BattleFieldManager.Instance.SoliderList.Add(this);
-        HP = 200;
         SetHealth();
 	}
-	public void Init(List<GameObject> target,int Group,int id)
+    void Update()
+    {
+
+    }
+    public void Init(List<GameObject> target,int Group,int id)
     {
 		this.FinalTargets= target;
         this.Group = Group;
@@ -30,7 +33,6 @@ public class Solider : BodyModel {
         }
 		return FinalTargets[0];
     }
-
     internal GameObject GetCurTarget()
     {
         if (CurTargets.Count == 0)
@@ -43,10 +45,6 @@ public class Solider : BodyModel {
             return null;
         return CurTargets[0];
     }
-
-    void Update () {
-        
-	}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -62,7 +60,6 @@ public class Solider : BodyModel {
             CurTargets.Add(body.gameObject);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         var body = other.GetComponent<BodyModel>();
@@ -107,5 +104,5 @@ public class Solider : BodyModel {
     {
         BattleFieldRequest.Instance.HurtRequest(id,hurtValue, ObjectID);
     }
-    
+
 }

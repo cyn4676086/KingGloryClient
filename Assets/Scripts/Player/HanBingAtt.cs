@@ -4,22 +4,32 @@ using UnityEngine;
 
 public class HanBingAtt : MonoBehaviour
 {
-    
+    public static HanBingAtt instance;
     void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        SetCD();
+        BuffManager();
         AddSkill1FxListener();
     }
+
+   
+
     void LateUpdate()
     {
         SetSkill1Position();
-        SetSkill3Position();
     }
 
     #region 寒冰射手-普通攻击
     private float HBAttTime;
     public float HBAttCD;
+    public int HBArrowHurt= -183;
     [HideInInspector]
     public int attIndex;
+
     public GameObject Arrow;
     public GameObject HandPosition;
     
@@ -71,7 +81,7 @@ public class HanBingAtt : MonoBehaviour
         var obj = Instantiate(Arrow, HandPosition.transform.position, transform.rotation);
         var arrow = obj.GetComponent<Arrow>();
         arrow.Owner = Model.id;
-
+        arrow.ArrowHurt = HBArrowHurt;
         if (Mathf.Round(attIndex / 1000) == 2)
         {
             arrow.target = BattleFieldManager.Instance.GetTowerByID(attIndex);
@@ -116,7 +126,8 @@ public class HanBingAtt : MonoBehaviour
     #region 寒冰射手-一技能
     public Transform Skill1Position;
     public GameObject Skill1Effect;
-    public int Skill1Hurt;
+    public int Skill1Hurt=-328;
+    public float Skill1CD=8f;
     //技能命中检测
     private void AddSkill1FxListener()
     {
@@ -191,6 +202,7 @@ public class HanBingAtt : MonoBehaviour
     }
     #endregion
     #region 寒冰二技能
+    public float Skill2CD=15f;
     public float Skill2DuringTime;
     internal void OnSkill2()
     {
@@ -216,14 +228,13 @@ public class HanBingAtt : MonoBehaviour
     {
         yield return new WaitForSeconds(Skill2DuringTime);
         HBAttCD = f;
-        print("寒冰技能2结束" + f);
     }
     internal void PlaySkill2()
     {
         GetComponent<PlayerMove>().isAttacking = false;
         float f = HBAttCD;
-        print("Hanbing 2技能触发 增加攻击速度");
-        HBAttCD = HBAttCD /2;
+        HBAttCD /= 2;
+        
         transform.Find("Skill2Effect").gameObject.SetActive(true);
         StartCoroutine(SKill2During(f, Skill2DuringTime));
         
@@ -237,17 +248,11 @@ public class HanBingAtt : MonoBehaviour
     #region 寒冰射手-三技能
     public Transform Skill3Position;
     public GameObject Skill3Effect;
-    public int Skill3Hurt;
-    
-    private void SetSkill3Position()
-    {
-        //技能特效跟随英雄
-        if (Skill3Effect != null && Skill3Position != null)
-        {
-            Skill3Effect.transform.position = Skill3Position.position;
-        }
-    }
 
+    public float Skill3CD=40f;
+    public int Skill3Hurt=-20;
+
+    
     internal void OnSkill3()
     {
         //获取到攻击对象，如果有，发送攻击指令
@@ -290,6 +295,39 @@ public class HanBingAtt : MonoBehaviour
         {
             Skill3Effect.GetComponent<Transform>().LookAt(item.transform.position);
         }
+    }
+    #endregion
+
+    #region 技能属性动态增长
+    private void BuffManager()
+    {
+        StartCoroutine(HBAttBuff());
+    }
+
+    private IEnumerator HBAttBuff()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60f);
+            //普通攻击加成
+            HBAttCD *= 0.8f;
+            HBArrowHurt = (int)(HBArrowHurt * 1.3f);
+            //一技能加成
+            Skill1CD *= 0.8f;
+            Skill1Hurt = (int)(Skill1Hurt * 1.1f);
+            //二技能加成
+            Skill2CD *= 0.8f;
+            Skill2DuringTime *= 1.1f;
+            //三技能加成
+            Skill3Hurt = (int)(Skill3Hurt * 1.2f);
+            SetCD();
+        }
+    }
+    private void SetCD()
+    {
+        GameObject.FindGameObjectWithTag("skill1").GetComponent<SkillCD>().Skill_time = Skill1CD;
+        GameObject.FindGameObjectWithTag("skill2").GetComponent<SkillCD>().Skill_time = Skill2CD;
+        GameObject.FindGameObjectWithTag("skill3").GetComponent<SkillCD>().Skill_time = Skill3CD;
     }
     #endregion
 }

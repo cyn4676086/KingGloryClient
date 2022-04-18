@@ -3429,7 +3429,7 @@ GameObject:
   - component: {fileID: 114211965356977402}
   m_Layer: 0
   m_Name: IceCrystal
-  m_TagString: Untagged
+  m_TagString: ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19355,6 +19355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeactivateTime: 5.31
+  destory: 0
 --- !u!114 &11439942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -19380,6 +19381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeactivateTime: 5.6
+  destory: 0
 --- !u!114 &11473802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -43037,6 +43039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d39a03e006e114e83a6494315fdea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FreezeHurt: 0
 --- !u!136 &136864181597173368
 CapsuleCollider:
   m_ObjectHideFlags: 1

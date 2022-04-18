@@ -11,6 +11,10 @@ TagManager:
   - HealthBarMe
   - HealthBarTarget
   - UI_EasyTouch
+  - skill1
+  - skill2
+  - skill3
+  - ice
   layers:
   - Default
   - TransparentFX

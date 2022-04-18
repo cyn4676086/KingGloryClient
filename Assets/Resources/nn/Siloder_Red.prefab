@@ -334,8 +334,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4474160901121272}
-  - component: {fileID: 95216792743619726}
   - component: {fileID: 114402098970268836}
+  - component: {fileID: 95216792743619726}
   - component: {fileID: 54251913651704780}
   - component: {fileID: 136375044535750526}
   - component: {fileID: 114709616296935340}
@@ -1498,7 +1498,7 @@ MonoBehaviour:
   isDead: 0
   Group: 1
   id: 0
-  HP: 0
+  HP: 1645
   HealthBarMe: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
   HealthBarTarget: {fileID: 22400004, guid: c079096fb4ad48d499c71ef3d43c6c52, type: 2}
   FinalTargets:
@@ -1506,7 +1506,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   CurTargets: []
-  SoliderAtt: -10
+  SoliderAtt: -60
 --- !u!114 &114709616296935340
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1542,6 +1542,12 @@ MonoBehaviour:
       fadeSpeed: 0.1
       onHitAlpha: 1
       duration: 1
+  defaultHealth: 0
+  lastHealth: 0
+  camDistance: 0
+  dist: 0
+  pos: 0
+  rate: 0
   canvas: {fileID: 0}
 --- !u!136 &136375044535750526
 CapsuleCollider:

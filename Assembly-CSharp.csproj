@@ -617,6 +617,7 @@
      <Compile Include="Assets\Resources\KriptoFX\Realistic Effects Pack v4\Scripts\RFX4_TransformMotion.cs" />
      <Compile Include="Assets\Resources\KriptoFX\Realistic Effects Pack v4\Scripts\RFX4_UVAnimation.cs" />
      <Compile Include="Assets\Resources\KriptoFX\Realistic Effects Pack v4\Scripts\RFX4_UVScroll.cs" />
+     <Compile Include="Assets\Scripts\BattleFieldDataManager.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderCanSeeEnemy.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderSeekCurTarget.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderSeekFinalTarget.cs" />
@@ -637,7 +638,6 @@
      <Compile Include="Assets\Scripts\Player\LeiDianSkill2.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerModel.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMove.cs" />
-     <Compile Include="Assets\Scripts\Player\Skill1_CD.cs" />
      <Compile Include="Assets\Scripts\Player\Thunder.cs" />
      <Compile Include="Assets\Scripts\Request\BattleFieldRequest.cs" />
      <Compile Include="Assets\Scripts\Request\ChatRequest.cs" />
@@ -657,6 +657,7 @@
      <Compile Include="Assets\Scripts\UI\MainPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\PopUpPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\SigninPanel.cs" />
+     <Compile Include="Assets\SkillCD.cs" />
      <Compile Include="Assets\UIManager\BasePanel.cs" />
      <Compile Include="Assets\UIManager\UIDicTool.cs" />
      <Compile Include="Assets\UIManager\UIManager.cs" />

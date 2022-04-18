@@ -25,7 +25,7 @@ public class HealthBar : MonoBehaviour {
 	private CanvasGroup canvasGroup;
 	private Vector2 healthbarPosition, healthbarSize, healthInfoPosition;
 	private Transform thisT;
-	private float defaultHealth, lastHealth, camDistance, dist, pos, rate;
+	public float defaultHealth, lastHealth, camDistance, dist, pos, rate;
 	private Camera cam;
     private GameObject healthbarRoot;
 	[HideInInspector]public Canvas canvas;

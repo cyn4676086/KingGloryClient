@@ -203,7 +203,7 @@ cfa93710d56cd4da2a3b2eec27bc1139 Assembly-CSharp.dll:UnityStandardAssets.Water.P
 a886bcc5a49782985b619ba765e47c5c Assembly-CSharp.dll:.Thunder
 cac5093fb1baf037bd671ecbc6727828 Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.ScreenOverlay
 8604de0f5beed95d79a3f24818973b37 Assembly-CSharp.dll:.CFX_AutoDestructShuriken
-44e80cbf348d7b35e4870a2628a60c7a Assembly-CSharp-firstpass.dll:.HealthBar
+3f927f6cf068a76779626e3b16187bf2 Assembly-CSharp-firstpass.dll:.HealthBar
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityStandardAssets.Water.Displace
 10b74813a48bec024655081ac075ed9d Assembly-CSharp-firstpass.dll:HedgehogTeam.EasyTouch.QuickTwist
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.ImpactEffect
@@ -360,3 +360,4 @@ b3432dfe180f02232d7612fb366593d3 Assembly-CSharp.dll:UnityStandardAssets.ImageEf
 750189b42ec599a86f3eb66f7024f3e0 Assembly-CSharp-firstpass.dll:.ControlUIInput
 7a9b2bc4c7be55d414c6022a3dda7baa Assembly-CSharp-firstpass.dll:.MultiCameraUI
 dd5481137759597d614818793c90a7fe Assembly-CSharp.dll:.LeiDianSkill2
+96ec899e8327a522eabccf207b849b32 Assembly-CSharp.dll:.BattleFieldDataManager

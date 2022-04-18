@@ -6,7 +6,8 @@ public class Arrow : MonoBehaviour {
 	internal int Owner;
 	internal BodyModel target;
 	private float speed = 10f;
-    public int ArrowHurt=-200;
+    [HideInInspector]
+    public int ArrowHurt;
 	// Use this for initialization
 	void Start () {
 		

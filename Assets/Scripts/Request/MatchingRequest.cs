@@ -61,6 +61,7 @@ public class MatchingRequest : Request
             BattleFieldManager.Instance.InitBattleField(playerindex,hero);
             BattleFieldManager.Instance.AddOnePlayer(playerindex == 1 ? 2 : 1,otherHero);
             //隐藏界面 开始战斗
+            GameObject.Find("BattleFiledManager").GetComponent<BattleFieldDataManager>().enabled = true;
             GameObject.FindGameObjectWithTag("MatchingPanel").SetActive(false);
         }
     }
