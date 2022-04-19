@@ -24,7 +24,7 @@ public class SoliderSeekCurTarget : Action
                 {
                     SoliderAttTime = Time.time + SoliderAttCD;
                     //小兵攻击目标
-                    Debug.LogError("攻击");
+                   
                     GetSolider().GetComponent<Animator>().SetTrigger("attack");
                 }
             }

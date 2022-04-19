@@ -19,6 +19,7 @@ public class IceController : MonoBehaviour {
         {
             return;
         }
+        
         other.gameObject.GetComponent<PlayerModel>().FreezeEnter(FreezeHurt);
         i++;
     }

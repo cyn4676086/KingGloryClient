@@ -141,7 +141,7 @@ public class BattleFieldRequest : Request
             string para = (string)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.BF_Att);
             var list = para.Split(',');
 
-            Debug.Log("收到服务器BF_Att:" + para);
+            //Debug.Log("收到服务器BF_Att:" + para);
 
             BattleFieldManager.Instance.PlayAtt(int.Parse(list[0]), int.Parse(list[1]), int.Parse(list[2]));
         }

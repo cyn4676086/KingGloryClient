@@ -25,6 +25,7 @@ public class PlayerModel : BodyModel
     }
     internal void BuffUp(int money)
     {
+        BattleFieldManager.Instance.ShowText(gameObject, "收益+"+money);
         Buff += money;
         //transform.Find("LvFx").GetComponent<ParticleSystem>().Play();
     }
@@ -40,6 +41,7 @@ public class PlayerModel : BodyModel
     {
         GetComponent<NavMeshAgent>().enabled = false;
         isDead = true;
+        
         GetComponent<Animator>().SetTrigger("death");
         //死亡动画 禁止玩家操作模型
         if (id == BattleFieldManager.Instance.MyPlayerIndex)
@@ -51,6 +53,7 @@ public class PlayerModel : BodyModel
             //复活时间累次增长，最长25s
             WaitTime += 5;
         }
+        BattleFieldManager.Instance.ShowText(gameObject, "阵亡 复活时间："+WaitTime);
         StartCoroutine(WaitRebirth());
     }
     private IEnumerator WaitRebirth()
@@ -81,11 +84,12 @@ public class PlayerModel : BodyModel
     private Coroutine Freeze;
     public void FreezeEnter(int freezeHurt)
     {
+        BattleFieldManager.Instance.ShowText(gameObject, "冰冻");
         if (id == BattleFieldManager.Instance.MyPlayerIndex)
         {
             DontPanel.Instance.gameObject.SetActive(true);
         }
-        
+      
         Freeze = StartCoroutine(FreezeExit( freezeHurt ));
     }
     private IEnumerator FreezeExit(int freezeHurt)
@@ -115,7 +119,8 @@ public class PlayerModel : BodyModel
     private Coroutine SpeedDown;
     public void SpeedDownEnter(float speed,float time)
     {
-            GetComponent<PlayerMove>().Speed = speed;
+        BattleFieldManager.Instance.ShowText(gameObject, "减速");
+        GetComponent<PlayerMove>().Speed = speed;
             Freeze = StartCoroutine(SpeedDownExit(time));
     }
     private IEnumerator SpeedDownExit(float time)
@@ -145,6 +150,7 @@ public class PlayerModel : BodyModel
     }
     public void FlyEnter()
     {
+        BattleFieldManager.Instance.ShowText(gameObject, "击飞");
         isFly = true;
         GetComponent<NavMeshAgent>().enabled = false;
         print("击飞开始");

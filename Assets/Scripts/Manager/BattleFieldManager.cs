@@ -302,19 +302,20 @@ public class BattleFieldManager : MonoBehaviour
     public void ShowText(GameObject item, string text)
     {
         //Build the information
-        HUDTextInfo info = new HUDTextInfo(item.transform, string.Format("{1}{0}", text, ""));
-
-        info.Color = Color.white;
-        info.Size = UnityEngine.Random.Range(20, 30);
-        info.Speed = UnityEngine.Random.Range(0.5f, 1);
-        info.VerticalAceleration = UnityEngine.Random.Range(-2, 2f);
-        info.VerticalPositionOffset = 2f;
-        info.VerticalFactorScale = UnityEngine.Random.Range(1.2f, 10);
-        info.Side = (UnityEngine.Random.Range(0, 2) == 1) ? bl_Guidance.LeftDown : bl_Guidance.RightDown;
-        info.ExtraDelayTime = -1;
-        info.AnimationType = bl_HUDText.TextAnimationType.PingPong;
-        info.FadeSpeed = 200;
-        info.ExtraFloatSpeed = -11;
+        HUDTextInfo info = new HUDTextInfo(item.transform, string.Format("{1}{0}", text, ""))
+        {
+            Color = Color.white,
+            Size = UnityEngine.Random.Range(30, 40),
+            Speed = UnityEngine.Random.Range(0.5f, 1),
+            VerticalAceleration = UnityEngine.Random.Range(-2, 2f),
+            VerticalPositionOffset = 2f,
+            VerticalFactorScale = UnityEngine.Random.Range(1.2f, 10),
+            Side = (UnityEngine.Random.Range(0, 2) == 1) ? bl_Guidance.LeftDown : bl_Guidance.RightDown,
+            ExtraDelayTime = -1,
+            AnimationType = bl_HUDText.TextAnimationType.PingPong,
+            FadeSpeed = 50,
+            ExtraFloatSpeed = -11
+        };
         bl_UHTUtils.GetHUDText.NewText(info);
     }
     #endregion

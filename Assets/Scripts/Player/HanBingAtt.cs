@@ -328,7 +328,7 @@ public class HanBingAtt : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             int buff = GetComponent<PlayerModel>().Buff;
-            print("Buff消耗："+GetComponent<PlayerModel>().Buff);
+            //print("Buff消耗："+GetComponent<PlayerModel>().Buff);
             if (buff > 0)
             {
                 for (; buff >= 0; buff--)

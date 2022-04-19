@@ -25,7 +25,6 @@ public class LeiDianSkill2 : MonoBehaviour {
         {
             other.gameObject.GetComponent<PlayerModel>().SpeedDownEnter(0.1f, 5f);
             i++;
-            print("雷电2技能减速触发");
         }
     }
 

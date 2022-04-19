@@ -21,7 +21,7 @@ public class JianShengAtt : MonoBehaviour
             if (dis < 2 && Skill3Ani == true)
             {
                 GetComponent<Animator>().SetTrigger("skill3");
-                print("三技能");
+               // print("三技能");
                 Skill3Ani = false;
                 isSkill3 = false;
             }
@@ -142,7 +142,7 @@ public class JianShengAtt : MonoBehaviour
         GetComponent<PlayerMove>().Speed = 1.8f;
         GetComponent<Animator>().SetBool("skill1", true);
         JSAttCD /= 2;
-        print("加速");
+        BattleFieldManager.Instance.ShowText(gameObject, "加速");
         StartCoroutine(SKill1During( Skill2DuringTime));
     }
 
@@ -152,7 +152,6 @@ public class JianShengAtt : MonoBehaviour
         GetComponent<Animator>().SetBool("skill1", false);
         GetComponent<PlayerMove>().Speed = 1.0f;
         JSAttCD *= 2;
-        print("结束");
     }
     #endregion
     #region 剑圣二技能
@@ -308,7 +307,7 @@ public class JianShengAtt : MonoBehaviour
                     Skill1DuringTime += 0.3f;
                 }
                 GetComponent<PlayerModel>().Buff = 0;
-                print("Buff清零：" + GetComponent<PlayerModel>().Buff + " " + JSAttHurt+ JSAttBuffHurt);
+                //print("Buff清零：" + GetComponent<PlayerModel>().Buff + " " + JSAttHurt+ JSAttBuffHurt);
             }
         }
     }
