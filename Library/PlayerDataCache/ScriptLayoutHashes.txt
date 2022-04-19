@@ -65,7 +65,7 @@ d73323c6bb5b5e250633a6a77af0ec86 Assembly-CSharp.dll:.Jianqi
 417ab40ab4e78c035e6a6007765e34fd Assembly-CSharp-firstpass.dll:HUDText.bl_ExampleUI
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RFX4_FPS
 aa13baec1c19c8fa869cb21cb01a3767 Assembly-CSharp.dll:UnityStandardAssets.Water.WaterBase
-f2840b2e3ba3ea1f44c9455ba02e7a34 Assembly-CSharp.dll:.PlayerModel
+6bff2b56ce1cc5aa751b134f88565633 Assembly-CSharp.dll:.PlayerModel
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -132,6 +132,7 @@ af723155c251fcfa0e66530a75f3ea4c UnityEngine.Timeline.dll:UnityEngine.Timeline.T
 e5c25ffee1e604fd1323b3464758b17e Assembly-CSharp.dll:.RFX4_PhysXSetImpulse
 38f2aefc9dcf0f8107e7bd37238b3096 Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.Blur
 f5ce04d51633a5a2e05a731aa45ef200 Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.MotionBlur
+716b656bc8105f0c39e65e65b83440bd Assembly-CSharp.dll:.BirthWater
 408b6396bb41d038cb19d8c287a97b9b Assembly-CSharp-firstpass.dll:.ControlUIEvent
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -166,7 +167,7 @@ dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics
 9865a0db77364f8930077972a1d5efab Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.BloomOptimized
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.AxisXUi
 53e9a06e06ee667ba98094e0a05c1367 Assembly-CSharp-firstpass.dll:.ETCTouchPad
-dcf6c614e0aa064f6fccfa101324f097 Assembly-CSharp.dll:.LeiDianAtt
+02cde7cf84f483c566c5251fdd708e4b Assembly-CSharp.dll:.LeiDianAtt
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
@@ -244,7 +245,6 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 1becd7d9373a4092235f47b8d96690ce Assembly-CSharp-firstpass.dll:.FingerTouch
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.DoubleTapMe
 aa9596d07bc4f0c8b481dc5d176af837 Assembly-CSharp.dll:.RFX4_WindCurves
-681b0efd3e1c43ece149ee2ae962b0dc Assembly-CSharp.dll:.Skill1_CD
 57bbdd1d20687c3e1e5ef3be099a1fb5 Assembly-CSharp.dll:.RFX4_ParticleTrail
 21984f001d5a114ee9fbf62810ee8eb7 Assembly-CSharp.dll:UnityStandardAssets.Water.SpecularLighting
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.LoadExamples
@@ -300,6 +300,7 @@ f6f640c5822e8d450df60af680c13b7d Assembly-CSharp.dll:.AutoRotary
 7d21db39a7430125297ff4af1ea502ed Assembly-CSharp.dll:.BodyModel
 7e27d2b8b9ad1e8b078cd277fa56b5c8 Assembly-CSharp-firstpass.dll:.bl_HUDText
 2f264043a6bb59ca3369df5a4d180e17 Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.CameraMotionBlur
+cd552e45054707b1f8fc4b184d712d54 Assembly-CSharp.dll:.SkillCD
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 9bf4606118874c36e6aa4745881f1e1b Assembly-CSharp.dll:.RFX4_RotateAround
 3f7b40b9dec82f7b3bef20c7dbdfcb1c Assembly-CSharp.dll:.CFX3_AutoStopLoopedEffect
@@ -324,7 +325,7 @@ a9010f4cf6c7c1a0a572d749b049001e Assembly-CSharp-firstpass.dll:.bl_Text
 5e15245a410c44a1daa341620c1fb47c Assembly-CSharp-firstpass.dll:.ButtonInputUI
 3a6c36b4d403c4d4142c6e67732c782f Assembly-CSharp.dll:DG.Tweening.DOTweenAnimation
 6746ad828d32ad6e5c07a63950fd4be6 Assembly-CSharp.dll:UnityStandardAssets.Water.WaterTile
-4a9cd9c75cb8d7296756a4c7558ee646 Assembly-CSharp.dll:.JianShengAtt
+9806a575410d3460a1ae4320f27f592c Assembly-CSharp.dll:.JianShengAtt
 7a72e4269ed6fccf7589e4157bc9fbad Assembly-UnityScript.dll:.Cloth
 4221d6f2d120ea1c2b5b1485c67f9a95 Assembly-CSharp-firstpass.dll:.MultiLayerTouch
 af4c120c08a83517c5ff7a79f5380780 Assembly-CSharp-firstpass.dll:.ButtonUIEvent
@@ -341,8 +342,9 @@ ed4224fa60be5609993c972b11b3c250 Assembly-CSharp-firstpass.dll:.HealthbarRoot
 167bffe48f624cf38de27f60570ca39d Assembly-CSharp.dll:.Arrow
 d653f62696ac919674f74bef9fa06752 Assembly-CSharp-firstpass.dll:HedgehogTeam.EasyTouch.QuickDrag
 b1154113c40e9398a6e72d9d1274549d Assembly-CSharp.dll:.RFX4_CopyPosition
-5d2e47f73ac113e28e5591ffd7e52bfb Assembly-CSharp.dll:.HanBingAtt
+5271fa98e885a2d85ac2c0be24879308 Assembly-CSharp.dll:.HanBingAtt
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnityStandardAssets.ImageEffects.PostEffectsBase
+96ec899e8327a522eabccf207b849b32 Assembly-CSharp.dll:.BattleFieldDataManager
 a52504e50c587e2f89099cdd93ae7824 Assembly-CSharp.dll:.RFX4_LightCurves
 9c354d8cc0d2b625c87d5b3da48f6608 Assembly-CSharp.dll:.CFX_SpawnSystem
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.RTS_NewSyntaxe
@@ -360,4 +362,3 @@ b3432dfe180f02232d7612fb366593d3 Assembly-CSharp.dll:UnityStandardAssets.ImageEf
 750189b42ec599a86f3eb66f7024f3e0 Assembly-CSharp-firstpass.dll:.ControlUIInput
 7a9b2bc4c7be55d414c6022a3dda7baa Assembly-CSharp-firstpass.dll:.MultiCameraUI
 dd5481137759597d614818793c90a7fe Assembly-CSharp.dll:.LeiDianSkill2
-96ec899e8327a522eabccf207b849b32 Assembly-CSharp.dll:.BattleFieldDataManager

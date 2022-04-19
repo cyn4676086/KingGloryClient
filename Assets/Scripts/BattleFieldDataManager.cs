@@ -36,14 +36,13 @@ public class BattleFieldDataManager : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(60f);
-            GameObject.Find("TowerModelR1").GetComponent<TowerManager>().attVal = 
-                GameObject.Find("TowerModelR1").GetComponent<TowerManager>().attVal + TowerHurtAdd;
+            GameObject.Find("TowerR1").GetComponent<TowerManager>().attVal = 
+                GameObject.Find("TowerR1").GetComponent<TowerManager>().attVal + TowerHurtAdd;
 
-            GameObject.Find("TowerModelB1").GetComponent<TowerManager>().attVal =
-               GameObject.Find("TowerModelB1").GetComponent<TowerManager>().attVal + TowerHurtAdd;
+            GameObject.Find("TowerB1").GetComponent<TowerManager>().attVal =
+               GameObject.Find("TowerB1").GetComponent<TowerManager>().attVal + TowerHurtAdd;
 
-            print("炮塔数值变化:"+GameObject.Find("TowerModelR1").GetComponent<TowerManager>().attVal+ " "+ GameObject.Find("TowerModelB1").GetComponent<TowerManager>().attVal);
-            if (GameObject.Find("TowerModelR1").GetComponent<TowerManager>().attVal >= TowerMaxHurt)
+           if (GameObject.Find("TowerR1").GetComponent<TowerManager>().attVal >= TowerMaxHurt)
             {
                 break;
             }

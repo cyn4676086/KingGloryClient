@@ -7,26 +7,24 @@ using UnityEngine.AI;
 public class SoliderSeekCurTarget : Action
 {
     //添加小兵攻击请求CD 时间戳计数
-    private float SoliderAttTime;
-    public float SoliderAttCD=2f;
-    public int SoliderAtt=-10;
+    private float SoliderAttTime=0;
+    public float SoliderAttCD=1.5f;
+    public int SoliderAtt;
     public override TaskStatus OnUpdate()
     {
-        var target = GetSolider().GetCurTarget();
-        if ( target != null && target.GetComponent<BodyModel>().isDead != true)
-        {
-            var dis = Vector3.Distance(transform.position, target.transform.position);
-            //动画
-            GetSolider().GetComponent<Animator>().SetFloat("speed",target.transform.position.magnitude);
-            
-            if (dis < 2)
-            {
 
+        var target = GetSolider().GetCurTarget();
+        if ( target != null && target.GetComponent<BodyModel>().isDead == false)
+        {
+            var dis = Vector3.Distance(GetComponent<Transform>().position, target.transform.position);
+            if (dis < 3)
+            {
                 GetComponent<NavMeshAgent>().isStopped = true;
                 if (Time.time > SoliderAttTime)
                 {
                     SoliderAttTime = Time.time + SoliderAttCD;
                     //小兵攻击目标
+                    Debug.LogError("攻击");
                     GetSolider().GetComponent<Animator>().SetTrigger("attack");
                 }
             }
@@ -35,7 +33,7 @@ public class SoliderSeekCurTarget : Action
                 GetComponent<NavMeshAgent>().isStopped = false;
                 GetComponent<NavMeshAgent>().SetDestination(target.transform.position);
             }
-
+            
             GetComponent<NavMeshAgent>().SetDestination(target.transform.position);
             return TaskStatus.Running;
         }

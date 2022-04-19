@@ -5322,11 +5322,13 @@ MonoBehaviour:
   isDead: 0
   Group: 0
   id: 0
-  HP: 3000
+  HP: 2619
   HealthBarMe: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
   HealthBarTarget: {fileID: 22400004, guid: c079096fb4ad48d499c71ef3d43c6c52, type: 2}
+  Buff: 0
   isMe: 0
   HeroName: 
+  WaitTime: 5
   isFly: 0
 --- !u!114 &114021594183060100
 MonoBehaviour:
@@ -5555,12 +5557,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LDAttCD: 1.5
+  LDAttHurt: 109
   attIndex: 0
   Thunder: {fileID: 1583947774285520, guid: 261bbb243af75ed41bb755764e5e6777, type: 2}
   HandPosition: {fileID: 1857613532290968}
   Skill1Effect: {fileID: 1349469207333238}
-  Skill1Hurt: -100
+  Skill1CD: 25
+  Skill1Hurt: -211
   Skill2DuringTime: 5
+  Skill2CD: 15
+  Skill3CD: 25
   Skill3Effect: {fileID: 1363456777638626}
   Skill3Target: {fileID: 0}
 --- !u!114 &114193311245433354
@@ -6881,7 +6887,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1664919200956394}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

@@ -168,7 +168,7 @@ public class HealthBar : MonoBehaviour {
 			healthInfo.rectTransform.anchoredPosition = -healthInfoPosition;
 
         if(healthLink.Value > defaultHealth)
-            defaultHealth = healthLink.Value;
+            healthLink.Value=(int)defaultHealth;
 	}
 
 	bool IsVisible()

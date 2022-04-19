@@ -30,8 +30,8 @@ public class TowerManager : BodyModel, IHurtObject
         if (GetTarget() != null)
         {
             Line.gameObject.SetActive(true);
-            Line.SetPosition(0, transform.position + new Vector3(0, 5.6f, 0));
-            Line.SetPosition(1, GetTarget().transform.position + new Vector3(0, 1.5f, 0));
+            Line.SetPosition(0, transform.position+new Vector3(0,5,0));
+            Line.SetPosition(1, GetTarget().transform.position + new Vector3(0, 1.2f, 0));
         }
         else
         {
@@ -52,6 +52,7 @@ public class TowerManager : BodyModel, IHurtObject
             return;
         }
         targets.Add(other.gameObject);
+        print(targets);
         //只有添加第一个对象的时候，才攻击
         if (targets.Count == 1)
         {
@@ -92,7 +93,7 @@ public class TowerManager : BodyModel, IHurtObject
         //再进行攻击
         if (GetTarget() != null)
         {
-            if (GetTarget().GetComponent<BodyModel>().HP > attVal)
+            if (GetTarget().GetComponent<BodyModel>().HP > -attVal)
             {
                 Attack();
             }
@@ -123,10 +124,9 @@ public class TowerManager : BodyModel, IHurtObject
     {
         var offset = new Vector3(0f, -3f, 0f);
         TowerDeath.GetComponent<ParticleSystem>().Play();
-        //Tower3DModel.transform.Translate(Vector3.up * 3);
         Tower3DModel.transform.position = Tower3DModel.transform.position + offset;
         enabled = false;
-        Line.gameObject.SetActive(false);
+        //Line.gameObject.SetActive(false);
         isDead = true;
         Destroy(guanghuan);
     }

@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BodyModel : MonoBehaviour,IHurtObject{
-    [HideInInspector]
 	public bool isDead;
-    [HideInInspector]
     public int Group;
-    [HideInInspector]
     public int id;
 	public int HP;
     public RectTransform HealthBarMe;

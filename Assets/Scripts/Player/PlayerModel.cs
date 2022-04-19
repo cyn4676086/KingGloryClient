@@ -6,7 +6,8 @@ using UnityEngine.AI;
 
 public class PlayerModel : BodyModel
 {
-    public int Exp;
+    [HideInInspector]
+    public int Buff;
     [HideInInspector]
     public bool isMe = false;
     [HideInInspector]
@@ -22,16 +23,60 @@ public class PlayerModel : BodyModel
             Dowing();
         }
     }
-    internal void ExpUp(int exp)
+    internal void BuffUp(int money)
     {
-        Exp += exp;
-        transform.Find("LvFx").GetComponent<ParticleSystem>().Play();
+        Buff += money;
+        //transform.Find("LvFx").GetComponent<ParticleSystem>().Play();
     }
     public override void SendHurtRequest(int hurtValue, int ObjectID)
     {
         //print("发送普通攻击player扣血请求");
         BattleFieldRequest.Instance.HurtRequest(id, hurtValue, ObjectID);
     }
+    #region  人物复活逻辑
+    public int WaitTime=5;
+    //协程复活计时
+    internal void PlayerDead()
+    {
+        GetComponent<NavMeshAgent>().enabled = false;
+        isDead = true;
+        GetComponent<Animator>().SetTrigger("death");
+        //死亡动画 禁止玩家操作模型
+        if (id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            DontPanel.Instance.gameObject.SetActive(true);
+        }
+        if (WaitTime <= 20)
+        {
+            //复活时间累次增长，最长25s
+            WaitTime += 5;
+        }
+        StartCoroutine(WaitRebirth());
+    }
+    private IEnumerator WaitRebirth()
+    {
+        yield return new WaitForSeconds(WaitTime);
+        if (id == 1)
+        {
+            transform.position = GameObject.Find("RedHero").transform.position;
+        }
+        if (id == 2)
+        {
+            transform.position = GameObject.Find("BlueHero").transform.position;
+        }
+        isDead = false;
+        GetComponent<NavMeshAgent>().enabled = true;
+        if (id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            DontPanel.Instance.gameObject.SetActive(false);
+        }
+        GetComponent<Animator>().SetTrigger("idle");
+        if (id == BattleFieldManager.Instance.MyPlayerIndex)
+        {
+            BattleFieldRequest.Instance.HurtRequest(id, (int)GetComponent<HealthBar>().defaultHealth, id);
+        }
+    }
+    #endregion
     #region 人物被冰冻
     private Coroutine Freeze;
     public void FreezeEnter(int freezeHurt)
@@ -50,10 +95,10 @@ public class PlayerModel : BodyModel
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            if (id != BattleFieldManager.Instance.MyPlayerIndex&&isDead==false)
-            {
-                BattleFieldRequest.Instance.HurtRequest(id, freezeHurt,BattleFieldManager.Instance.MyPlayerIndex);
-            }
+            //if (id != BattleFieldManager.Instance.MyPlayerIndex&&isDead==false)
+            //{
+            //    BattleFieldRequest.Instance.HurtRequest(id, freezeHurt,BattleFieldManager.Instance.MyPlayerIndex);
+            //}
             if (Time.time - t >= 5f)
             {
                 break;

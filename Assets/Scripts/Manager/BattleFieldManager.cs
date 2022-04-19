@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class BattleFieldManager : MonoBehaviour
@@ -45,6 +46,7 @@ public class BattleFieldManager : MonoBehaviour
         MyPlayerIndex = playerIndex;
         //开始实例化
         Player = (Instantiate(Resources.Load("Heros/"+HeroName)as GameObject, HeroPos[MyPlayerIndex - 1].position, HeroPos[MyPlayerIndex - 1].rotation)).GetComponent<PlayerMove>();
+        Player.GetComponent<NavMeshAgent>().enabled = true;
         Player.Model.HeroName = HeroName;
         Debug.LogError("初始化我方英雄");
         Player.Model.id = MyPlayerIndex;
@@ -93,8 +95,9 @@ public class BattleFieldManager : MonoBehaviour
         {
             if (index != MyPlayerIndex)
             {
-                PlayerMove p = (Instantiate(Resources.Load("Heros/" + HeroName) as GameObject, HeroPos[index - 1].position, Quaternion.identity) as GameObject).GetComponent<PlayerMove>();
+                PlayerMove p = (Instantiate(Resources.Load("Heros/" + HeroName) as GameObject, HeroPos[index - 1].position, HeroPos[index - 1].rotation) as GameObject).GetComponent<PlayerMove>();
                 p.Model.HeroName = HeroName;
+                p.GetComponent<NavMeshAgent>().enabled = true;
                 Debug.LogError("初始化敌方英雄");
                 p.Model.id = index;
                 p.Model.Group = index;
@@ -142,7 +145,6 @@ public class BattleFieldManager : MonoBehaviour
         }
         return null;
     }
-    
     internal TowerManager GetTowerByID(int attIndex)
     {
         //通过id找到对象
@@ -167,7 +169,7 @@ public class BattleFieldManager : MonoBehaviour
         }
         return null;
     }
-    internal void TowerDestory(int index, int exp, int objectID)
+    internal void TowerDestory(int index, int objectID)
     {
         if (Mathf.Round(index / 1000) == 2)
         {
@@ -180,9 +182,9 @@ public class BattleFieldManager : MonoBehaviour
         if (Mathf.Round(objectID / 1000) == 0)
         {
             var item = GetPlayerByID(objectID);
-            item.Model.ExpUp(exp);
         }
     }
+
     //接收服务器发送的伤害数据
     internal void Hurt(int index, int hp,int ObjectID)
     {
@@ -190,17 +192,23 @@ public class BattleFieldManager : MonoBehaviour
         {
             //塔被扣血
             var item = GetTowerByID(index);
+            if (item.GetComponent<BodyModel>().isDead == true)
+                return;
             item.HP += hp;
             //播放特效fx
             Instantiate(attFx, item.transform.position + Vector3.up, Quaternion.identity);
 
             if (item.HP <= 0)
             {
-                //print("塔爆炸");
-                BattleFieldRequest.Instance.DestoryRequest(item.id,100,ObjectID);
+                BattleFieldRequest.Instance.DestoryRequest(item.id,ObjectID);
                 if (item.id % 2 == 0)
                 {
                     BattleFieldRequest.Instance.EndingRequest(item.Group);
+                    if (GetPlayerByID(ObjectID).Model != null)
+                    {
+                        GetPlayerByID(ObjectID).Model.BuffUp(15);
+                    }
+                    
                 }
             }
             ShowBlood(item.gameObject,hp);
@@ -209,31 +217,41 @@ public class BattleFieldManager : MonoBehaviour
         {
             //角色被扣血
             var item = GetPlayerByID(index);
+            if (item.Model.isDead == true)
+                return;
             item.Model.HP += hp;
-            //print(index + " 被攻击，剩余血量 " + item.Model.HP);
-            //播放特效fx
             Instantiate(attFx, item.transform.position + Vector3.up, Quaternion.identity);
             ShowBlood(item.gameObject, hp);
             if (item.Model.HP <= 0)
             {
                 //角色死亡，进入复活倒计时
-                item.PlayerDead();
+                item.Model.PlayerDead();
+               
+                if (GetPlayerByID(ObjectID).Model != null)
+                {
+                    GetPlayerByID(ObjectID).Model.BuffUp(10);
+                }
             }
-            
         }
         else if(Mathf.Round(index / 1000) == 6)
         {
             //小兵被扣血
             var item = GetSoliderByID(index);
+            if (item.GetComponent<BodyModel>().isDead == true)
+                return;
             item.HP += hp;
-            //print(index + " 被攻击，剩余血量 " + item.HP);
+
             //播放特效fx
             Instantiate(attFx, item.transform.position + Vector3.up, Quaternion.identity);
 
             if (item!=null&&item.HP <= 0)
             {
-                //print("小兵dead");
                 item.SoliderDeathAnimator();
+                if (GetPlayerByID(ObjectID) != null)
+                {
+                    GetPlayerByID(ObjectID).Model.BuffUp(1);
+                }
+
             }
             ShowBlood(item.gameObject, hp);
         }
@@ -245,7 +263,49 @@ public class BattleFieldManager : MonoBehaviour
         HUDTextInfo info = new HUDTextInfo(item.transform, string.Format("{1}{0}", hp, ""));
 
         info.Color = (hp > 0 ? Color.green:Color.red) ;
-        info.Size = UnityEngine.Random.Range(30, 60);
+        if (hp < 0)
+        {
+            if (-hp < 300)
+            {
+                info.Size = UnityEngine.Random.Range(10,15);
+            }
+            if (-hp >= 300 && -hp < 1000)
+            {
+                info.Size = UnityEngine.Random.Range(15, 20);
+            }
+            if (-hp >= 1000 && -hp < 2000)
+            {
+                info.Size = UnityEngine.Random.Range(20, 40);
+            }
+            if (-hp >= 2000)
+            {
+                info.Size = UnityEngine.Random.Range(40, 60);
+            }
+        }
+        if (hp > 0)
+        {
+                info.Size = UnityEngine.Random.Range(10, 20);
+        }
+        info.Speed = UnityEngine.Random.Range(0.5f, 1);
+        info.VerticalAceleration = UnityEngine.Random.Range(-2, 2f);
+        info.VerticalPositionOffset = 0f;
+        info.VerticalFactorScale = UnityEngine.Random.Range(1.2f, 10);
+        info.Side = (UnityEngine.Random.Range(0, 2) == 1) ? bl_Guidance.LeftDown : bl_Guidance.RightDown;
+        info.ExtraDelayTime = -1;
+        info.AnimationType = bl_HUDText.TextAnimationType.PingPong;
+        info.FadeSpeed = 200;
+        info.ExtraFloatSpeed = -11;
+        //Send the information
+        bl_UHTUtils.GetHUDText.NewText(info);
+    }
+    //显示文字
+    public void ShowText(GameObject item, string text)
+    {
+        //Build the information
+        HUDTextInfo info = new HUDTextInfo(item.transform, string.Format("{1}{0}", text, ""));
+
+        info.Color = Color.white;
+        info.Size = UnityEngine.Random.Range(20, 30);
         info.Speed = UnityEngine.Random.Range(0.5f, 1);
         info.VerticalAceleration = UnityEngine.Random.Range(-2, 2f);
         info.VerticalPositionOffset = 2f;
@@ -255,7 +315,6 @@ public class BattleFieldManager : MonoBehaviour
         info.AnimationType = bl_HUDText.TextAnimationType.PingPong;
         info.FadeSpeed = 200;
         info.ExtraFloatSpeed = -11;
-        //Send the information
         bl_UHTUtils.GetHUDText.NewText(info);
     }
     #endregion

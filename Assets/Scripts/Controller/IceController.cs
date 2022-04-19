@@ -6,7 +6,7 @@ using UnityEngine;
 public class IceController : MonoBehaviour {
     public int FreezeHurt;
     void Start () {
-        FreezeHurt = HanBingAtt.instance.Skill3Hurt;
+
 	}
 	
 	void Update () {

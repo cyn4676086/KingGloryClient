@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeiDianAtt : MonoBehaviour {
-    
+public class LeiDianAtt : MonoBehaviour
+{
+
     void Start()
     {
+        SetCD();
+        BuffManager();
         AddSkillFxListener();
     }
     void FixedUpdate()
@@ -13,13 +16,15 @@ public class LeiDianAtt : MonoBehaviour {
         if (isSkill3)
         {
             //位移
-            transform.position = Vector3.Lerp(transform.position,Skill3Target.transform.position, 1f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, Skill3Target.transform.position, 1f * Time.deltaTime);
 
         }
     }
     #region 雷电-普通攻击
     private float LDAttTime;
     public float LDAttCD;
+    public int LDAttHurt;
+    private int LDAttBuffHurt;
     [HideInInspector]
     public int attIndex;
     public GameObject Thunder;
@@ -28,7 +33,7 @@ public class LeiDianAtt : MonoBehaviour {
 
     public void OnAttBtn()
     {
-       
+
         if (GetTarget(BattleFieldManager.Instance.playerList))
         {
             return;
@@ -71,7 +76,7 @@ public class LeiDianAtt : MonoBehaviour {
         var obj = Instantiate(Thunder, HandPosition.transform.position, transform.rotation);
         var thunder = obj.GetComponent<Thunder>();
         thunder.Owner = Model.id;
-
+        thunder.ThunderHurt = LDAttHurt;
         if (Mathf.Round(attIndex / 1000) == 2)
         {
             thunder.target = BattleFieldManager.Instance.GetTowerByID(attIndex);
@@ -86,7 +91,7 @@ public class LeiDianAtt : MonoBehaviour {
         }
         GetComponent<PlayerMove>().isAttacking = false;
     }
-  
+
     internal void PlayAtt(int target)
     {
         if (Mathf.Round(attIndex / 1000) == 2)
@@ -116,7 +121,10 @@ public class LeiDianAtt : MonoBehaviour {
     #endregion
     #region 雷电射手-一技能
     public GameObject Skill1Effect;
-    public int Skill1Hurt=-100;
+    public float Skill1CD;
+    public int Skill1Hurt = -100;
+    private int Skill1BuffHurt;
+
     //技能命中检测
     private void AddSkillFxListener()
     {
@@ -131,7 +139,7 @@ public class LeiDianAtt : MonoBehaviour {
         //技能命中
         if (e.Hit.transform.tag == "Player")
         {
-            
+
             //发送请求，技能伤害
             if (e.Hit.transform.GetComponent<BodyModel>().id != BattleFieldManager.Instance.MyPlayerIndex)
             {
@@ -141,7 +149,7 @@ public class LeiDianAtt : MonoBehaviour {
         }
 
     }
-    
+
 
     internal void OnSkill1()
     {
@@ -186,6 +194,7 @@ public class LeiDianAtt : MonoBehaviour {
     #endregion
     #region 雷电二技能
     public float Skill2DuringTime;
+    public float Skill2CD;
     internal void OnSkill2()
     {
         //获取到攻击对象，如果有，发送攻击指令
@@ -216,7 +225,7 @@ public class LeiDianAtt : MonoBehaviour {
         float f = LDAttCD;
         LDAttCD = LDAttCD / 2;
         GetComponent<Animator>().SetTrigger("skill2");
-        Instantiate(Resources.Load("Heros/LDSkill2") as GameObject, transform.position+2*Vector3.up, Quaternion.identity);
+        Instantiate(Resources.Load("Heros/LDSkill2") as GameObject, transform.position + 2 * Vector3.up, Quaternion.identity);
         StartCoroutine(SKill2During(f, Skill2DuringTime));
     }
     private void OnDisable()
@@ -227,10 +236,11 @@ public class LeiDianAtt : MonoBehaviour {
 
     #endregion
     #region 雷电-三技能
+    public float Skill3CD;
     public GameObject Skill3Effect;
     public PlayerMove Skill3Target;
-    private bool isSkill3=false;
-    private int Skill3Hurt=-300;
+    private bool isSkill3 = false;
+    private int Skill3Hurt = -300;
 
     internal void OnSkill3()
     {
@@ -240,7 +250,7 @@ public class LeiDianAtt : MonoBehaviour {
             if (item != this.Model)
             {
                 var dis = Vector3.Distance(item.transform.position, this.transform.position);
-                
+
                 if (dis < 7f)
                 {
                     attIndex = item.GetComponent<PlayerModel>().id;
@@ -256,7 +266,7 @@ public class LeiDianAtt : MonoBehaviour {
         if (Skill3Effect == null) return;
         isSkill3 = false;
         Skill3Effect.SetActive(true);
-        
+
     }
     public void OnSkill3AnimationDown()
     {
@@ -264,7 +274,7 @@ public class LeiDianAtt : MonoBehaviour {
         {
             return;
         }
-        var distance= Vector3.Distance(transform.position, Skill3Target.transform.position );
+        var distance = Vector3.Distance(transform.position, Skill3Target.transform.position);
         if (distance < 1.5)
         {
             if (Skill3Target.Model.id != BattleFieldManager.Instance.MyPlayerIndex)
@@ -273,9 +283,9 @@ public class LeiDianAtt : MonoBehaviour {
             }
             Skill3Target.Model.FlyEnter();
         }
-        
+
     }
-   
+
     public void OnSkill3AnimationDone()
     {
         GetComponent<PlayerMove>().isAttacking = false;
@@ -295,6 +305,65 @@ public class LeiDianAtt : MonoBehaviour {
         {
             Skill3Effect.GetComponent<Transform>().LookAt(item.transform.position);
         }
+    }
+    #endregion
+
+    #region 人物属性动态增长
+    private void BuffManager()
+    {
+        StartCoroutine(LDAttBuff());
+        StartCoroutine(LDExpAttBuff());
+    }
+
+    private IEnumerator LDAttBuff()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(60f);
+            //生命值加成
+            GetComponent<HealthBar>().defaultHealth += 970;
+            //普通攻击加成
+            LDAttCD *= 0.9f;
+            LDAttHurt = (int)(LDAttHurt * 1.1f);
+            //一技能加成
+            Skill1CD *= 0.7f;
+            Skill1Hurt = (int)(Skill1Hurt * 1.3f);
+            //二技能加成
+            Skill2CD *= 0.9f;
+            Skill2DuringTime *= 1.1f;
+            //三技能加成
+            Skill3CD *= 0.8f;
+            Skill3Hurt =(int)(Skill3Hurt* 1.1f);
+            SetCD();
+        }
+    }
+    private IEnumerator LDExpAttBuff()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+            int buff = GetComponent<PlayerModel>().Buff;
+          
+            if (buff > 0)
+            {
+                for (; buff >= 0; buff--)
+                {
+                    //生命值加成
+                    GetComponent<HealthBar>().defaultHealth += 60;
+                    //普通攻击加成
+                    LDAttBuffHurt -= 10;
+                    //一技能加成
+                    Skill1BuffHurt -= 20;
+                }
+                GetComponent<PlayerModel>().Buff = 0;
+            }
+        }
+    }
+    private void SetCD()
+    {
+        GameObject.FindGameObjectWithTag("skill1").GetComponent<SkillCD>().Skill_time = Skill1CD;
+        GameObject.FindGameObjectWithTag("skill2").GetComponent<SkillCD>().Skill_time = Skill2CD;
+        GameObject.FindGameObjectWithTag("skill3").GetComponent<SkillCD>().Skill_time = Skill3CD;
     }
     #endregion
 }

@@ -8,7 +8,7 @@ public class Jianqi : MonoBehaviour
     internal int Owner;
     internal BodyModel target;
     private float speed = 100f;
-    public int JSAttHurt = -200;
+    public int JSAttHurt = -197;
     // Use this for initialization
     void Start()
     {

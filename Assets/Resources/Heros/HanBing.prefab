@@ -3508,7 +3508,6 @@ MonoBehaviour:
   Skill3Position: {fileID: 4564197720196000}
   Skill3Effect: {fileID: 1364547553275126}
   Skill3CD: 40
-  Skill3Hurt: -30
 --- !u!114 &114067433883609818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3962,12 +3961,13 @@ MonoBehaviour:
   isDead: 0
   Group: 0
   id: 0
-  HP: 3000
+  HP: 2910
   HealthBarMe: {fileID: 22400004, guid: e1937e1c6f9ba6c4ba4d36e07d553b6d, type: 2}
   HealthBarTarget: {fileID: 22400004, guid: c079096fb4ad48d499c71ef3d43c6c52, type: 2}
-  Exp: 0
+  Buff: 0
   isMe: 0
   HeroName: 
+  WaitTime: 5
   isFly: 0
 --- !u!114 &114958831281882312
 MonoBehaviour:
@@ -4172,7 +4172,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1564785415407380}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

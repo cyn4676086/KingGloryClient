@@ -48,7 +48,7 @@ public class SoldierSpwan : MonoBehaviour
                 yield return new WaitForSeconds(0.6f);
             }
             ++flag;
-            yield return new WaitForSeconds(33f);
+            yield return new WaitForSeconds(43f);
         }
     }
 
@@ -61,7 +61,7 @@ public class SoldierSpwan : MonoBehaviour
             solider.GetComponent<Solider>().HP = solider.GetComponent<Solider>().HP+55*flag;
             solider.GetComponent<Solider>().SoliderAtt = solider.GetComponent<Solider>().SoliderAtt-flag;
         }
-        if (flag >= 5 && time >= 180)
+        if (flag >= 3 && time >= 180)
         {
             flag = 0;
         }
@@ -72,7 +72,7 @@ public class SoldierSpwan : MonoBehaviour
             solider.GetComponent<Solider>().SoliderAtt = -120;
             solider.GetComponent<Solider>().SoliderAtt = solider.GetComponent<Solider>().SoliderAtt - flag;
         }
-        if (flag >= 10 && time >= 300 && time<600)
+        if (flag >= 8 && time >= 300 && time < 600)
         {
             flag = 0;
         }
@@ -83,7 +83,10 @@ public class SoldierSpwan : MonoBehaviour
             solider.GetComponent<Solider>().SoliderAtt = -213;
             solider.GetComponent<Solider>().SoliderAtt = solider.GetComponent<Solider>().SoliderAtt -2* flag;
         }
-        
+        if (flag >= 8  && time >= 600)
+        {
+            flag = 0;
+        }
         if (time >= 600)
         {
             solider.GetComponent<Solider>().HP = 3192;

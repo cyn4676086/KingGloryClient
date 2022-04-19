@@ -80,42 +80,7 @@ public class PlayerMove : MonoBehaviour
     }
    
 
-    //协程复活计时
-    private Coroutine Coroutine;
-    internal void PlayerDead()
-    {
-        Model.isDead = true;
-        GetComponent<Animator>().SetTrigger("death");
-        //死亡动画 禁止玩家操作模型
-        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
-        {
-            DontPanel.Instance.gameObject.SetActive(true);
-        }
-        Coroutine = StartCoroutine(WaitRebirth());
-    }
-    private IEnumerator WaitRebirth()
-    {
-        yield return new WaitForSeconds(10f);
-        Model.transform.position = BattleFieldManager.Instance.HeroPos[Model.id - 1].position;
-        Model.isDead = false;
-        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
-        {
-            DontPanel.Instance.gameObject.SetActive(false);
-        }
-        GetComponent<Animator>().SetTrigger("idel");
-        Debug.LogError(Model.id + " " + BattleFieldManager.Instance.MyPlayerIndex);
-        if (Model.id == BattleFieldManager.Instance.MyPlayerIndex)
-        {
-            Debug.LogError("复活加血");
-            BattleFieldRequest.Instance.HurtRequest(Model.id, 1000, Model.id);
-        }
-    }
-    private void OnDisable()
-    {
-        //关闭协程
-        StopCoroutine(Coroutine);
-    }
-
+    
 
     #endregion
 

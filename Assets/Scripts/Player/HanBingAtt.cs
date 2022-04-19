@@ -6,11 +6,7 @@ public class HanBingAtt : MonoBehaviour
 {
     public static HanBingAtt instance;
     void Start()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
+    { 
         SetCD();
         BuffManager();
         AddSkill1FxListener();
@@ -26,7 +22,8 @@ public class HanBingAtt : MonoBehaviour
     #region 寒冰射手-普通攻击
     private float HBAttTime;
     public float HBAttCD;
-    public int HBArrowHurt= -183;
+    public int HBArrowHurt;
+    private int HBArrowBuffHurt;
     [HideInInspector]
     public int attIndex;
 
@@ -81,7 +78,8 @@ public class HanBingAtt : MonoBehaviour
         var obj = Instantiate(Arrow, HandPosition.transform.position, transform.rotation);
         var arrow = obj.GetComponent<Arrow>();
         arrow.Owner = Model.id;
-        arrow.ArrowHurt = HBArrowHurt;
+        //基础伤害与加成伤害
+        arrow.ArrowHurt = HBArrowHurt+HBArrowBuffHurt;
         if (Mathf.Round(attIndex / 1000) == 2)
         {
             arrow.target = BattleFieldManager.Instance.GetTowerByID(attIndex);
@@ -126,7 +124,8 @@ public class HanBingAtt : MonoBehaviour
     #region 寒冰射手-一技能
     public Transform Skill1Position;
     public GameObject Skill1Effect;
-    public int Skill1Hurt=-328;
+    public int Skill1Hurt;
+    private int Skill1BuffHurt;
     public float Skill1CD=8f;
     //技能命中检测
     private void AddSkill1FxListener()
@@ -144,7 +143,7 @@ public class HanBingAtt : MonoBehaviour
             //发送请求，技能伤害
             if (e.Hit.transform.GetComponent<BodyModel>().id != BattleFieldManager.Instance.MyPlayerIndex)
             {
-                BattleFieldRequest.Instance.HurtRequest(e.Hit.transform.GetComponent<PlayerModel>().id, Skill1Hurt, Model.id);
+                BattleFieldRequest.Instance.HurtRequest(e.Hit.transform.GetComponent<PlayerModel>().id, Skill1Hurt+ Skill1BuffHurt, Model.id);
             }
         }
 
@@ -250,7 +249,6 @@ public class HanBingAtt : MonoBehaviour
     public GameObject Skill3Effect;
 
     public float Skill3CD=40f;
-    public int Skill3Hurt=-20;
 
     
     internal void OnSkill3()
@@ -291,17 +289,18 @@ public class HanBingAtt : MonoBehaviour
         print("技能3动作触发");
         GetComponent<PlayerMove>().isAttacking = true;
         attIndex = target;
-        if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != this.Model.Group)
+        if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != Model.Group)
         {
             Skill3Effect.GetComponent<Transform>().LookAt(item.transform.position);
         }
     }
     #endregion
 
-    #region 技能属性动态增长
+    #region 人物属性动态增长
     private void BuffManager()
     {
         StartCoroutine(HBAttBuff());
+        StartCoroutine(HBExpAttBuff());
     }
 
     private IEnumerator HBAttBuff()
@@ -309,6 +308,8 @@ public class HanBingAtt : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(60f);
+            //生命值加成
+            GetComponent<HealthBar>().defaultHealth += 670;
             //普通攻击加成
             HBAttCD *= 0.8f;
             HBArrowHurt = (int)(HBArrowHurt * 1.3f);
@@ -318,9 +319,30 @@ public class HanBingAtt : MonoBehaviour
             //二技能加成
             Skill2CD *= 0.8f;
             Skill2DuringTime *= 1.1f;
-            //三技能加成
-            Skill3Hurt = (int)(Skill3Hurt * 1.2f);
             SetCD();
+        }
+    }
+    private IEnumerator HBExpAttBuff()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+            int buff = GetComponent<PlayerModel>().Buff;
+            print("Buff消耗："+GetComponent<PlayerModel>().Buff);
+            if (buff > 0)
+            {
+                for (; buff >= 0; buff--)
+                {
+                    //生命值加成
+                    GetComponent<HealthBar>().defaultHealth  += 60;
+                    //普通攻击加成
+                    HBArrowBuffHurt -= 16;
+                    //一技能加成
+                    Skill1BuffHurt -= 10;
+                }
+                GetComponent<PlayerModel>().Buff = 0;
+                print("Buff清零："+GetComponent<PlayerModel>().Buff+" "+HBArrowBuffHurt + " "+ Skill1BuffHurt);
+            }
         }
     }
     private void SetCD()

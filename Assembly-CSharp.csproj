@@ -621,6 +621,7 @@
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderCanSeeEnemy.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderSeekCurTarget.cs" />
      <Compile Include="Assets\Scripts\BehaviorTree\SoliderSeekFinalTarget.cs" />
+     <Compile Include="Assets\Scripts\BirthWater.cs" />
      <Compile Include="Assets\Scripts\BodyModel.cs" />
      <Compile Include="Assets\Scripts\Controller\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Controller\DontPanel.cs" />
@@ -645,6 +646,7 @@
      <Compile Include="Assets\Scripts\Request\MatchingRequest.cs" />
      <Compile Include="Assets\Scripts\Request\Request.cs" />
      <Compile Include="Assets\Scripts\Request\SigninRequest.cs" />
+     <Compile Include="Assets\Scripts\SkillCD.cs" />
      <Compile Include="Assets\Scripts\Solider\SoldierSpwan.cs" />
      <Compile Include="Assets\Scripts\Solider\Solider.cs" />
      <Compile Include="Assets\Scripts\Tower\FireBallMove.cs" />
@@ -657,7 +659,6 @@
      <Compile Include="Assets\Scripts\UI\MainPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\PopUpPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\SigninPanel.cs" />
-     <Compile Include="Assets\SkillCD.cs" />
      <Compile Include="Assets\UIManager\BasePanel.cs" />
      <Compile Include="Assets\UIManager\UIDicTool.cs" />
      <Compile Include="Assets\UIManager\UIManager.cs" />
