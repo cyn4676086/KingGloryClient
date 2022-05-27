@@ -31,7 +31,7 @@ public class PlayerModel : BodyModel
     }
     public override void SendHurtRequest(int hurtValue, int ObjectID)
     {
-        //print("发送普通攻击player扣血请求");
+        ////print("发送普通攻击player扣血请求");
         BattleFieldRequest.Instance.HurtRequest(id, hurtValue, ObjectID);
     }
     #region  人物复活逻辑
@@ -153,7 +153,7 @@ public class PlayerModel : BodyModel
         BattleFieldManager.Instance.ShowText(gameObject, "击飞");
         isFly = true;
         GetComponent<NavMeshAgent>().enabled = false;
-        print("击飞开始");
+        //print("击飞开始");
         StartCoroutine(FlyExit());
     }
     
@@ -161,7 +161,7 @@ public class PlayerModel : BodyModel
     {
         yield return new WaitForSeconds(0.7f);
         isFly = false;
-        print("开始下落");
+        //print("开始下落");
         isDown = true;
         yield return new WaitForSeconds(0.7f);
         isDown = false;
@@ -172,7 +172,7 @@ public class PlayerModel : BodyModel
         }
         GetComponent<NavMeshAgent>().enabled = true;
         
-        print("结束");
+        //print("结束");
     }
     #endregion
 }

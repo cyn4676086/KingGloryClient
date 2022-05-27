@@ -11,6 +11,7 @@ public class BattleFieldRequest : Request
     public static BattleFieldRequest Instance;
     private int curX;
     private int curY;
+    private Vector3 curPos;
 
     public new void Awake()
     {
@@ -44,9 +45,10 @@ public class BattleFieldRequest : Request
     internal void MoveRequest(int posX, int posY, Vector3 pos)
     {
         //在更新操作的时候，才发送请求
-        if (curX == posX && curY == posY) return;
+        if (curX == posX && curY == posY&& curPos==pos) return;
         curX = posX;
         curY = posY;
+        curPos = pos;
         //构造参数为输入轴、当前坐标向量乘以提前倍率以抵消延迟
         var data = new Dictionary<byte, object>();
         data.Add((byte)ParaCode.ParaType, ParaCode.BF_Move);
@@ -112,7 +114,7 @@ public class BattleFieldRequest : Request
         //构造参数
         data.Add((byte)ParaCode.ParaType, ParaCode.BF_Ending);
         data.Add((byte)ParaCode.BF_Ending, Group);
-
+        Debug.LogError(OpCode);
         //发送
         PhotonEngine.peer.OpCustom((byte)OpCode, data, true);
     }
@@ -156,7 +158,9 @@ public class BattleFieldRequest : Request
         }
         else if (type == ParaCode.BF_Ending)
         {
+            
             int index = (int)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.BF_Ending);
+            Debug.Log("收到服务器BF_End:"+index);
             EndingPanelController.instance.Ending(index);
         }
         else if (type == ParaCode.BF_Destory)

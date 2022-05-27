@@ -29,7 +29,7 @@ public class Thunder : MonoBehaviour
             var dis = Vector3.Distance(transform.position, obj.transform.position + Vector3.up);
             if (dis < 0.5)
             {
-                //print("检测到碰撞，销毁箭");
+                ////print("检测到碰撞，销毁箭");
                 Destroy(this.gameObject);
                 //发送协议
                 if (target.isDead != true && Owner == BattleFieldManager.Instance.MyPlayerIndex)

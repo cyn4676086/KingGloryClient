@@ -52,7 +52,7 @@ public class TowerManager : BodyModel, IHurtObject
             return;
         }
         targets.Add(other.gameObject);
-        print(targets);
+        //print(targets);
         //只有添加第一个对象的时候，才攻击
         if (targets.Count == 1)
         {

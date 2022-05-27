@@ -21,10 +21,10 @@ public class LeiDianSkill2 : MonoBehaviour {
             return;
         }
         
-        if (other.GetComponent<PlayerModel>() != null && i == 0)
+        if (other.GetComponent<PlayerModel>() != null)
         {
-            other.gameObject.GetComponent<PlayerModel>().SpeedDownEnter(0.1f, 5f);
-            i++;
+            other.gameObject.GetComponent<PlayerModel>().SpeedDownEnter(0.4f, 5f);
+            
         }
     }
 

@@ -14,19 +14,18 @@ public class LodingPanel : BasePanel {
 
     private IEnumerator Loding()
     {
-        SceneManager.LoadScene("GameHall");
         var t = Time.time;
         var img = transform.Find("bottom/Image").GetComponent<Image>();
         img.fillAmount = 0;
         while (true)
         {
             yield return new WaitForSeconds(0.05f);
-            img.fillAmount = (Time.time - t) / 4;
+            img.fillAmount = (Time.time - t) / 1;
             if (img.fillAmount==1)
             {
                 UIManager.GetInstance().PopPanel();
-                //UIManager.GetInstance().PushPanel(UIPanelType.MainPanel);
-                SceneManager.LoadScene("GameHall");
+                UIManager.GetInstance().PushPanel(UIPanelType.MainPanel);
+                //SceneManager.LoadScene("GameHall");
                 break;
             }
         }

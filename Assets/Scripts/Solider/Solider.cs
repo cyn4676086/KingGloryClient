@@ -57,7 +57,7 @@ public class Solider : BodyModel {
         if (body.isDead == false && body.Group != Group)
         {
             CurTargets.Add(body.gameObject);
-           // print("添加" + body.gameObject.name);
+           // //print("添加" + body.gameObject.name);
         }
     }
     private void OnTriggerExit(Collider other)

@@ -30,7 +30,7 @@ public class MatchingRequest : Request
         data.Add((byte)ParaCode.HeroType, PickedHeroName);
         //发送
         PhotonEngine.peer.OpCustom((byte)OpCode, data, true);
-        print("发送匹配请求");
+        //print("发送匹配请求");
     }
 
     public override void OnOperationResponse(OperationResponse operationResponse)
@@ -38,16 +38,16 @@ public class MatchingRequest : Request
         //解析数据
         if (operationResponse.ReturnCode == (byte)ReturnCode.Success)
         {
-            print("匹配中");
+            //print("匹配中");
         }
         else
         {
-            print("请求失败");
+            //print("请求失败");
         }
     }
     public override void OnEvent(EventData data)
     {
-        print("match return");
+        //print("match return");
         //解析数据
         ParaCode type = (ParaCode)DicTool.GetValue<byte, object>(data.Parameters, (byte)ParaCode.ParaType);
         if (type == ParaCode.Matching_confirm)

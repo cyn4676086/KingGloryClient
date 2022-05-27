@@ -21,10 +21,11 @@ public class LeiDianAtt : MonoBehaviour
         }
     }
     #region 雷电-普通攻击
+    private bool Skilling;
     private float LDAttTime;
     public float LDAttCD;
     public int LDAttHurt;
-    private int LDAttBuffHurt;
+    private int LDAttBuffHurt = 0;
     [HideInInspector]
     public int attIndex;
     public GameObject Thunder;
@@ -49,26 +50,33 @@ public class LeiDianAtt : MonoBehaviour
     }
     private bool GetTarget(List<BodyModel> list)
     {
-        foreach (var item in list)
+        if (Skilling)
         {
-            if (item.isDead == false && item.Group != Model.Group && Model.isDead == false)
+            return false;
+        }
+        
+            foreach (var item in list)
             {
-                var dis = Vector3.Distance(item.transform.position, this.transform.position);
-                if (dis < 3f)
+                if (item.isDead == false && item.Group != Model.Group && Model.isDead == false)
                 {
-                    if (Time.time > LDAttTime)
+                    var dis = Vector3.Distance(item.transform.position, this.transform.position);
+                    if (dis < 3f)
                     {
-                        LDAttTime = Time.time + LDAttCD;
-                        attIndex = item.id;
-                        //发送攻击请求
-                        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
-                        GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
-                        return true;
+                        if (Time.time > LDAttTime)
+                        {
+                            LDAttTime = Time.time + LDAttCD;
+                            attIndex = item.id;
+                            //发送攻击请求
+                            BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Normal);
+                            GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                            return true;
+                        }
                     }
                 }
             }
-        }
-        return false;
+            return false;
+        
+
     }
     public void OnAttackAnimation()
     {
@@ -76,7 +84,7 @@ public class LeiDianAtt : MonoBehaviour
         var obj = Instantiate(Thunder, HandPosition.transform.position, transform.rotation);
         var thunder = obj.GetComponent<Thunder>();
         thunder.Owner = Model.id;
-        thunder.ThunderHurt = LDAttHurt;
+        thunder.ThunderHurt = LDAttHurt + LDAttBuffHurt;
         if (Mathf.Round(attIndex / 1000) == 2)
         {
             thunder.target = BattleFieldManager.Instance.GetTowerByID(attIndex);
@@ -135,7 +143,7 @@ public class LeiDianAtt : MonoBehaviour
     }
     private void Tm_CollisionEnter(object sender, RFX4_TransformMotion.RFX4_CollisionInfo e)
     {
-        print("技能命中");
+        //print("技能命中");
         //技能命中
         if (e.Hit.transform.tag == "Player")
         {
@@ -143,7 +151,7 @@ public class LeiDianAtt : MonoBehaviour
             //发送请求，技能伤害
             if (e.Hit.transform.GetComponent<BodyModel>().id != BattleFieldManager.Instance.MyPlayerIndex)
             {
-                print("发送伤害");
+                //print("发送伤害");
                 BattleFieldRequest.Instance.HurtRequest(e.Hit.transform.GetComponent<PlayerModel>().id, Skill1Hurt, Model.id);
             }
         }
@@ -165,6 +173,7 @@ public class LeiDianAtt : MonoBehaviour
                     //发送攻击请求
                     BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill1);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                    Skilling = true;
                 }
             }
         }
@@ -173,18 +182,19 @@ public class LeiDianAtt : MonoBehaviour
     {
         if (Skill1Effect == null) return;
         GetComponent<PlayerMove>().isAttacking = false;
+        Skilling = false;
     }
     internal void PlaySkill(int target)
     {
         GetComponent<PlayerMove>().isAttacking = true;
-        print("动作" + GetComponent<PlayerMove>().isAttacking);
+        //print("动作" + GetComponent<PlayerMove>().isAttacking);
         //先转向到目标角色
         GetComponent<Transform>().LookAt(BattleFieldManager.Instance.GetPlayerByID(target).GetComponent<Transform>().position);
         var item = BattleFieldManager.Instance.GetPlayerByID(target);
         //切换动画状态机
         GetComponent<Animator>().SetTrigger("skill1");
         Skill1Effect.SetActive(true);
-        print("技能动作触发");
+        //print("技能动作触发");
         attIndex = target;
         if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != this.Model.Group)
         {
@@ -241,6 +251,7 @@ public class LeiDianAtt : MonoBehaviour
     public PlayerMove Skill3Target;
     private bool isSkill3 = false;
     private int Skill3Hurt = -300;
+    
 
     internal void OnSkill3()
     {
@@ -253,10 +264,12 @@ public class LeiDianAtt : MonoBehaviour
 
                 if (dis < 7f)
                 {
+                    
                     attIndex = item.GetComponent<PlayerModel>().id;
                     //发送攻击请求
                     BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill3);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                    Skilling = true;
                 }
             }
         }
@@ -289,6 +302,7 @@ public class LeiDianAtt : MonoBehaviour
     public void OnSkill3AnimationDone()
     {
         GetComponent<PlayerMove>().isAttacking = false;
+        Skilling = false;
     }
     internal void PlaySkill3(int target)
     {
@@ -322,6 +336,7 @@ public class LeiDianAtt : MonoBehaviour
             yield return new WaitForSeconds(60f);
             //生命值加成
             GetComponent<HealthBar>().defaultHealth += 970;
+            BattleFieldRequest.Instance.HurtRequest(Model.id, 970, BattleFieldManager.Instance.MyPlayerIndex);
             //普通攻击加成
             LDAttCD *= 0.9f;
             LDAttHurt = (int)(LDAttHurt * 1.1f);
@@ -333,7 +348,7 @@ public class LeiDianAtt : MonoBehaviour
             Skill2DuringTime *= 1.1f;
             //三技能加成
             Skill3CD *= 0.8f;
-            Skill3Hurt =(int)(Skill3Hurt* 1.1f);
+            Skill3Hurt = (int)(Skill3Hurt * 1.1f);
             SetCD();
         }
     }
@@ -343,13 +358,14 @@ public class LeiDianAtt : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             int buff = GetComponent<PlayerModel>().Buff;
-          
+
             if (buff > 0)
             {
                 for (; buff >= 0; buff--)
                 {
                     //生命值加成
                     GetComponent<HealthBar>().defaultHealth += 60;
+                    BattleFieldRequest.Instance.HurtRequest(Model.id, 60, BattleFieldManager.Instance.MyPlayerIndex);
                     //普通攻击加成
                     LDAttBuffHurt -= 10;
                     //一技能加成

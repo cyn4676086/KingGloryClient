@@ -36,7 +36,6 @@ public class PlayerMove : MonoBehaviour
         GetComponent<NavMeshAgent>().velocity = new Vector3(x, 0, y) * 3f*Speed;
         //切换动画状态机
         GetComponent<Animator>().SetFloat ("speed", speed.magnitude);
-        
         //速度小于0的时候，就不旋转。
         if (speed.magnitude == 0)
         {

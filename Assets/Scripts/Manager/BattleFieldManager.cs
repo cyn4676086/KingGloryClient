@@ -119,7 +119,7 @@ public class BattleFieldManager : MonoBehaviour
     /// </summary>
     internal void MovePlayer(short index, short x, short y, float Px, float Py, float Pz)
     {
-        //使用向量提前量来抵消与服务端的延迟
+       
         foreach (var item in playerList)
         {
             //拿到对应index的对象
@@ -174,11 +174,11 @@ public class BattleFieldManager : MonoBehaviour
         if (Mathf.Round(index / 1000) == 2)
         {
             //防御塔
-            // print("销毁" + index);
+            // //print("销毁" + index);
             var item = GetTowerByID(index);
             item.PlayDestroy();
         }
-        //print("ObjID" + objectID);
+        ////print("ObjID" + objectID);
         if (Mathf.Round(objectID / 1000) == 0)
         {
             var item = GetPlayerByID(objectID);
@@ -410,6 +410,36 @@ public class BattleFieldManager : MonoBehaviour
         if (Player.Model.HeroName == "JianSheng")
         {
             Player.GetComponent<JianShengAtt>().OnAttBtn();
+        }
+    }
+    public void OnFlash()
+    {
+        if (Player.Model.id == MyPlayerIndex && Player.Model.isDead == false)
+        {
+            
+            var offset = Player.Model.transform.forward;
+            
+            Player.GetComponent<Transform>().position = Player.GetComponent<Transform>().position +4 *offset;
+        }
+    }
+    public void OnHome()
+    {
+        StartCoroutine(Home());
+    }
+    private IEnumerator Home()
+    {
+        Vector3 pos= Player.GetComponent<Transform>().position;
+        if (Player.Model.id == MyPlayerIndex && Player.Model.isDead == false)
+        {
+            Player.gameObject.transform.Find("LvFx").GetComponent<ParticleSystem>().Play();
+            yield return new WaitForSeconds(4);
+                
+            if (pos== Player.GetComponent<Transform>().position)
+            {
+                Player.GetComponent<NavMeshAgent>().enabled = false;
+                Player.GetComponent<Transform>().position = HeroPos[MyPlayerIndex - 1].position;
+                Player.GetComponent<NavMeshAgent>().enabled = true;
+            }  
         }
     }
     public void OnSkill1()

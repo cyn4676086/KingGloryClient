@@ -21,7 +21,7 @@ public class JianShengAtt : MonoBehaviour
             if (dis < 2 && Skill3Ani == true)
             {
                 GetComponent<Animator>().SetTrigger("skill3");
-               // print("三技能");
+               // //print("三技能");
                 Skill3Ani = false;
                 isSkill3 = false;
             }
@@ -227,7 +227,7 @@ public class JianShengAtt : MonoBehaviour
         if (-Skill3Hurt > Skill3Target.GetComponent<BodyModel>().HP)
         {
             GameObject.FindGameObjectWithTag("skill3").GetComponent<SkillCD>().StopCD() ;
-            print("刷新");
+            //print("刷新");
         }
         if (distance < 2)
         { 
@@ -272,6 +272,7 @@ public class JianShengAtt : MonoBehaviour
             yield return new WaitForSeconds(60f);
             //生命值加成
             GetComponent<HealthBar>().defaultHealth += 670;
+            BattleFieldRequest.Instance.HurtRequest(Model.id, 670, BattleFieldManager.Instance.MyPlayerIndex);
             //普通攻击加成
             JSAttCD *= 0.8f;
             JSAttHurt = (int)(JSAttHurt * 1.3f);
@@ -294,20 +295,21 @@ public class JianShengAtt : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             int buff = GetComponent<PlayerModel>().Buff;
-            print("Buff消耗：" + GetComponent<PlayerModel>().Buff);
+            //print("Buff消耗：" + GetComponent<PlayerModel>().Buff);
             if (buff > 0)
             {
                 for (; buff >= 0; buff--)
                 {
                     //生命值加成
                     GetComponent<HealthBar>().defaultHealth += 50;
+                    BattleFieldRequest.Instance.HurtRequest(Model.id, 50, BattleFieldManager.Instance.MyPlayerIndex);
                     //普通攻击加成
                     JSAttBuffHurt -= 19;
                     //二技能加成
                     Skill1DuringTime += 0.3f;
                 }
                 GetComponent<PlayerModel>().Buff = 0;
-                //print("Buff清零：" + GetComponent<PlayerModel>().Buff + " " + JSAttHurt+ JSAttBuffHurt);
+                ////print("Buff清零：" + GetComponent<PlayerModel>().Buff + " " + JSAttHurt+ JSAttBuffHurt);
             }
         }
     }

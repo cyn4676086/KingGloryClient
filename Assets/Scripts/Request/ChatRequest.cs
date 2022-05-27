@@ -26,11 +26,11 @@ public class ChatRequest : Request {
     {
         if (operationResponse.ReturnCode == (byte)ReturnCode.Success)
         {
-            print("发送成功");
+            //print("发送成功");
         }
         else
         {
-            print("发送失败");
+            //print("发送失败");
         }
     }
 

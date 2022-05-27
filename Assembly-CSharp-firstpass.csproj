@@ -184,7 +184,6 @@
      <None Include="Assets\Resources\KriptoFX\Realistic Effects Pack v4\Shaders\Water\RFX4_WaterSplash.shader" />
      <None Include="Assets\Plugins\X-BARS\Example\Shaders\Rim Lit Bumped Specular.shader" />
      <None Include="Assets\Plugins\EasyTouchBundle\EasyTouch\_Documentation\How to migrate from EasyTouch 4.X.txt" />
-     <None Include="Assets\Resources\KriptoFX\Realistic Effects Pack v4\Readme.txt" />
      <None Include="Assets\Plugins\EasyTouchBundle\Readme.txt" />
      <None Include="Assets\Z!M.O.B.A Environment Art Pack\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
      <None Include="Assets\Z!M.O.B.A Environment Art Pack\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />

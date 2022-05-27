@@ -14,24 +14,24 @@ public class BasePanel : MonoBehaviour {
             canvas = GetComponent<CanvasGroup>();
         }
       
-        print("open");
+        //print("open");
         canvas.alpha = 1;
         canvas.blocksRaycasts = true;
     }
 
     public virtual void OnExit()
     {
-        print("close");
+        //print("close");
         canvas.alpha = 0;
         canvas.blocksRaycasts = false;
     }
 
     public virtual void OnPause()
     {
-        print("OnPause");
+        //print("OnPause");
     }
     public virtual void OnResume()
     {
-        print("OnResume");
+        //print("OnResume");
     }
 }

@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/IndexUI.unity
     guid: 8d5f91c1a83d185478d039f1d0819721
   - enabled: 1
-    path: Assets/Scenes/GameHall.unity
-    guid: 00ea29f470be1684d82d7e9407e17ad2
-  - enabled: 1
     path: Assets/Scenes/1v1.unity
     guid: 8347fca8d00b6ea488ea2d70b814790b
+  - enabled: 1
+    path: Assets/Scenes/GameHall.unity
+    guid: ad27d47dc83c6ee419e738e62c33c450

@@ -20,6 +20,7 @@ public class HanBingAtt : MonoBehaviour
     }
 
     #region 寒冰射手-普通攻击
+    private bool Skilling;
     private float HBAttTime;
     public float HBAttCD;
     public int HBArrowHurt;
@@ -50,6 +51,10 @@ public class HanBingAtt : MonoBehaviour
     }
     private bool GetTarget(List<BodyModel> list)
     {
+        if (Skilling)
+        {
+            return false;
+        }
         //获取到攻击对象英雄，如果有，发送攻击指令
         foreach (var item in list)
         {
@@ -78,6 +83,7 @@ public class HanBingAtt : MonoBehaviour
         var obj = Instantiate(Arrow, HandPosition.transform.position, transform.rotation);
         var arrow = obj.GetComponent<Arrow>();
         arrow.Owner = Model.id;
+        arrow.Suck = Suck;
         //基础伤害与加成伤害
         arrow.ArrowHurt = HBArrowHurt+HBArrowBuffHurt;
         if (Mathf.Round(attIndex / 1000) == 2)
@@ -190,7 +196,7 @@ public class HanBingAtt : MonoBehaviour
         var item = BattleFieldManager.Instance.GetPlayerByID(target);
         //切换动画状态机
         GetComponent<Animator>().SetTrigger("skill1");
-        print("技能动作触发");
+        //print("技能动作触发");
         GetComponent<PlayerMove>().isAttacking = true;
         attIndex = target;
         if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != this.Model.Group)
@@ -205,21 +211,10 @@ public class HanBingAtt : MonoBehaviour
     public float Skill2DuringTime;
     internal void OnSkill2()
     {
-        //获取到攻击对象，如果有，发送攻击指令
-        foreach (var item in BattleFieldManager.Instance.playerList)
-        {
-            if (item != Model)
-            {
-                var dis = Vector3.Distance(item.transform.position, this.transform.position);
-                if (dis < 7f)
-                {
-                    attIndex = item.GetComponent<PlayerModel>().id;
-                    //发送攻击请求
-                    BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill2);
-                    GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
-                }
-            }
-        }
+        attIndex = Model.id;
+        //发送攻击请求
+        BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill2);
+        GetComponent<Transform>().LookAt(GetComponent<Transform>().position);
     }
 
     private Coroutine Skill2EffectTime;
@@ -227,13 +222,14 @@ public class HanBingAtt : MonoBehaviour
     {
         yield return new WaitForSeconds(Skill2DuringTime);
         HBAttCD = f;
+        Suck = 0;
     }
     internal void PlaySkill2()
     {
         GetComponent<PlayerMove>().isAttacking = false;
         float f = HBAttCD;
         HBAttCD /= 2;
-        
+        Suck = 0.2f;
         transform.Find("Skill2Effect").gameObject.SetActive(true);
         StartCoroutine(SKill2During(f, Skill2DuringTime));
         
@@ -249,8 +245,8 @@ public class HanBingAtt : MonoBehaviour
     public GameObject Skill3Effect;
 
     public float Skill3CD=40f;
+    private float Suck;
 
-    
     internal void OnSkill3()
     {
         //获取到攻击对象，如果有，发送攻击指令
@@ -265,6 +261,7 @@ public class HanBingAtt : MonoBehaviour
                     //发送攻击请求
                     BattleFieldRequest.Instance.AttackRequest(Model.id, attIndex, Common.AttackType.Skill3);
                     GetComponent<Transform>().LookAt(item.GetComponent<Transform>().position);
+                    Skilling = true;
                 }
             }
         }
@@ -278,6 +275,7 @@ public class HanBingAtt : MonoBehaviour
     public void OnSkill3AnimationDone()
     {
         GetComponent<PlayerMove>().isAttacking = false;
+        Skilling = false;
     }
     internal void PlaySkill3(int target)
     {
@@ -286,7 +284,7 @@ public class HanBingAtt : MonoBehaviour
         var item = BattleFieldManager.Instance.GetPlayerByID(target);
         //切换动画状态机
         GetComponent<Animator>().SetTrigger("skill3");
-        print("技能3动作触发");
+        //print("技能3动作触发");
         GetComponent<PlayerMove>().isAttacking = true;
         attIndex = target;
         if (BattleFieldManager.Instance.GetPlayerByID(target).Model.Group != Model.Group)
@@ -310,6 +308,7 @@ public class HanBingAtt : MonoBehaviour
             yield return new WaitForSeconds(60f);
             //生命值加成
             GetComponent<HealthBar>().defaultHealth += 670;
+            BattleFieldRequest.Instance.HurtRequest(Model.id, 670, BattleFieldManager.Instance.MyPlayerIndex);
             //普通攻击加成
             HBAttCD *= 0.8f;
             HBArrowHurt = (int)(HBArrowHurt * 1.3f);
@@ -328,20 +327,20 @@ public class HanBingAtt : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             int buff = GetComponent<PlayerModel>().Buff;
-            //print("Buff消耗："+GetComponent<PlayerModel>().Buff);
             if (buff > 0)
             {
                 for (; buff >= 0; buff--)
                 {
                     //生命值加成
                     GetComponent<HealthBar>().defaultHealth  += 60;
+                    BattleFieldRequest.Instance.HurtRequest(Model.id, 60, BattleFieldManager.Instance.MyPlayerIndex);
                     //普通攻击加成
                     HBArrowBuffHurt -= 16;
                     //一技能加成
                     Skill1BuffHurt -= 10;
                 }
                 GetComponent<PlayerModel>().Buff = 0;
-                print("Buff清零："+GetComponent<PlayerModel>().Buff+" "+HBArrowBuffHurt + " "+ Skill1BuffHurt);
+               
             }
         }
     }

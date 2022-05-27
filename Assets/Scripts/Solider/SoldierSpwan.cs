@@ -42,8 +42,8 @@ public class SoldierSpwan : MonoBehaviour
                 s.GetComponent<NavMeshAgent>().enabled = true;
                 s.GetComponent<Solider>().Init(FinalTargetList, Group, 6000 + index + Group * 100);
                 SoliderDataManager(s);
-                print(flag);
-                print(s.GetComponent<Solider>().HP + " "+s.GetComponent<Solider>().SoliderAtt);
+                //print(flag);
+                //print(s.GetComponent<Solider>().HP + " "+s.GetComponent<Solider>().SoliderAtt);
                 index++;
                 yield return new WaitForSeconds(0.6f);
             }

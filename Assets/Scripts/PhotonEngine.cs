@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using ExitGames.Client.Photon;
 using Common;
+using UnityEngine.UI;
 
 public class PhotonEngine : MonoBehaviour, IPhotonPeerListener
 {
     public static PhotonEngine Instance;
-
-
     public static PhotonPeer peer;
     private void Awake()
     {
@@ -23,7 +22,6 @@ public class PhotonEngine : MonoBehaviour, IPhotonPeerListener
 
     void Start()
     {
-        peer = new PhotonPeer(this, ConnectionProtocol.Udp);
         peer = new PhotonPeer(this, ConnectionProtocol.Udp);
         //peer.Connect("127.0.0.1:5055", "MyGame");
         peer.Connect("114.55.64.119:5055", "MyGame");
@@ -49,7 +47,6 @@ public class PhotonEngine : MonoBehaviour, IPhotonPeerListener
     public void OnEvent(EventData eventData)
     {
         DicTool.GetValue(RequestDic, (OperationCode)eventData.Code).OnEvent(eventData);
-
         return;
         if ((byte)OperationCode.Chat == eventData.Code)
         {
@@ -102,7 +99,17 @@ public class PhotonEngine : MonoBehaviour, IPhotonPeerListener
 
     public void OnStatusChanged(StatusCode statusCode)
     {
-        Debug.LogError(statusCode);
+        if (statusCode == StatusCode.Connect)
+        {
+            GameObject.Find("Notice").GetComponent<Text>().text = "连接服务器成功";
+        }else if (statusCode == StatusCode.Connect)
+        {
+            GameObject.Find("Notice").GetComponent<Text>().text = "连接服务器失败";
+        }
+        else
+        {
+            GameObject.Find("Notice").GetComponent<Text>().text = "网络环境异常";
+        }
     }
 
     private Dictionary<OperationCode, Request> RequestDic = new Dictionary<OperationCode, Request>();

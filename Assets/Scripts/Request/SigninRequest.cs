@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using ExitGames.Client.Photon;
 using Common;
 
@@ -32,10 +33,10 @@ public class SigninRequest : Request
     {
         if (operationResponse.ReturnCode == (byte)ReturnCode.Success)
         {
-            print("注册成功");
+            GameObject.Find("SigninNotice").GetComponent<Text>().text = "注册成功";
         }else
         {
-            print("注册失败");
+            GameObject.Find("SigninNotice").GetComponent<Text>().text = "注册失败";
         }
     }
 }

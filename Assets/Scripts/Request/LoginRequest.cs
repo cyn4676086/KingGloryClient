@@ -4,6 +4,7 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using Common;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoginRequest : Request{
     [HideInInspector]
@@ -38,7 +39,7 @@ public class LoginRequest : Request{
         }
         else
         {
-            print("登录失败");
+            GameObject.Find("Notice").GetComponent<Text>().text = "登录失败 请检查";
         }
     }
 

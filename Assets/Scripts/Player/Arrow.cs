@@ -8,8 +8,10 @@ public class Arrow : MonoBehaviour {
 	private float speed = 10f;
     [HideInInspector]
     public int ArrowHurt;
-	// Use this for initialization
-	void Start () {
+    public float Suck;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -33,6 +35,8 @@ public class Arrow : MonoBehaviour {
                 if (target.isDead!=true&& Owner == BattleFieldManager.Instance.MyPlayerIndex)
                 {
                     target.SendHurtRequest(ArrowHurt, Owner);
+                    //吸血
+                    BattleFieldRequest.Instance.HurtRequest(Owner, (int)(-ArrowHurt * Suck), Owner);
                 }
             }
 

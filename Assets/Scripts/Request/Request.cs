@@ -13,16 +13,12 @@ public abstract  class Request : MonoBehaviour {
 		PhotonEngine.Instance.AddRequest(this);
     }
 	public void Start()
-    {
-    
-    }
+    {}
 	public void OnDestory()
     {
 		PhotonEngine.Instance.RemoveRequest(this);
     }
-
 	public abstract void OnOperationResponse(OperationResponse operationResponse);
 
 	public abstract void OnEvent(EventData data);
-
 }
