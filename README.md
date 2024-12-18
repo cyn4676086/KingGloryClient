@@ -1,5 +1,5 @@
 # KingGloryClient
-MOBA游戏服务端 客户端见主页仓库
+MOBA游戏客户端 服务端见主页仓库
 
 
 基于Unity 3D的MOBA手游开发与设计
